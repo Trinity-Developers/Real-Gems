@@ -11,8 +11,8 @@ import com.squareup.picasso.Picasso
 import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-class GemsAdapter(val context: Context, private val gemsList: List<Gems>): RecyclerView.Adapter<GemsAdapter.GemsViewHolder>() {
-    class GemsViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
+class SearchAdapter (val context: Context, private val gemsList: List<Gems>): RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+    class SearchViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
         val name=itemView.findViewById<TextView>(R.id.name)
         val cut=itemView.findViewById<TextView>(R.id.cut)
         val origin=itemView.findViewById<TextView>(R.id.origin)
@@ -29,16 +29,16 @@ class GemsAdapter(val context: Context, private val gemsList: List<Gems>): Recyc
         )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GemsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view= LayoutInflater.from(context).inflate(R.layout.viewholder_gems,parent,false)
-        return GemsViewHolder(view)
+        return SearchViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return gemsList.size
     }
 
-    override fun onBindViewHolder(holder: GemsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val gem = gemsList[position]
         holder.name.text = gem.nameId
         holder.cut.text = gem.cutId

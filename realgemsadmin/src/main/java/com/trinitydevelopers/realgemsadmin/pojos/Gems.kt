@@ -1,16 +1,13 @@
 package com.trinitydevelopers.realgemsadmin.pojos
 
-import java.io.Serializable
-
 data class Gems(
-    var name: String = "",
-    var cut: String = "",
-    var origin: String = "",
-    var shape: String = "",
-    var type: String = "",
-    var composition: String = "",
-    var treatment: String = "",
-    var color: String = "",
-    var carats: String = ""
-){
-}
+    val nameId: String?="",
+    val cutId: String?="",
+    val origin: String?="",
+    val shapeId: String?="",
+    val compositionId: String?="",
+    val treatmentId: String?="",
+    val color: String?="",
+    val carats: Double?=0.0,
+    val imageUrls: List<String> = emptyList() // Optional, can be set later
+)

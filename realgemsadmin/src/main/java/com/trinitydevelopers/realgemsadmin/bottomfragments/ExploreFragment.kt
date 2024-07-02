@@ -12,14 +12,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.adapter.GemsAdapter
 import com.trinitydevelopers.realgemsadmin.databinding.FragmentExploreBinding
+import com.trinitydevelopers.realgemsadmin.fragments.AddDropDownFragment
+import com.trinitydevelopers.realgemsadmin.fragments.SearchFragment
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
 class ExploreFragment : Fragment() {
     private lateinit var binding:FragmentExploreBinding
-    private var gemsList: MutableList<Gems> = mutableListOf()
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var gemsAdapter: GemsAdapter
-    private lateinit var db: FirebaseFirestore
-
+    private var gemsList = mutableListOf<Gems>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,32 +33,34 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db= FirebaseFirestore.getInstance()
-        setUpRecyclerView()
-        loadGemsData()
-
-    }
-
-    private fun loadGemsData() {
-        db.collection("Gems").get().addOnSuccessListener { querySnapshot ->
-            gemsList.clear()
-            for (document in querySnapshot.documents) {
-                val gems = document.toObject(Gems::class.java)
-                gems?.let {
-                    gemsList.add(it)
-                }
-            }
-            Log.d("ExploreFragment", "Gems List: $gemsList") // Log the retrieved data
-            gemsAdapter.notifyDataSetChanged()
-        }.addOnFailureListener { exception ->
-            Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
-            Log.e("ExploreFragment", "Error getting documents: ", exception) // Log any errors
+        firestore = FirebaseFirestore.getInstance()
+        setupRecyclerView()
+        fetchGemsData()
+        binding.edtExploreSearch.setOnClickListener {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_container, SearchFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
-
-    private fun setUpRecyclerView() {
+    private fun setupRecyclerView() {
         gemsAdapter = GemsAdapter(requireContext(), gemsList)
+        binding.gemsRV.layoutManager = GridLayoutManager(context, 2)
         binding.gemsRV.adapter = gemsAdapter
-        binding.gemsRV.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+    private fun fetchGemsData() {
+        firestore.collection("gems")
+            .get()
+            .addOnSuccessListener { documents ->
+                gemsList.clear()
+                for (document in documents) {
+                    val gem = document.toObject(Gems::class.java)
+                    gemsList.add(gem)
+                }
+                gemsAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.w("ExploreFragment", "Error getting documents: ", exception)
+            }
     }
 }

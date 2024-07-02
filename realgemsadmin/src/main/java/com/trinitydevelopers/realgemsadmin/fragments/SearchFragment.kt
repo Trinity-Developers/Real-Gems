@@ -1,60 +1,96 @@
 package com.trinitydevelopers.realgemsadmin.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
 import com.trinitydevelopers.realgemsadmin.R
+import com.trinitydevelopers.realgemsadmin.adapter.SearchAdapter
+import com.trinitydevelopers.realgemsadmin.databinding.FragmentSearchBinding
+import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var bindingSearch: FragmentSearchBinding
+    private lateinit var searchAdapter: SearchAdapter
+    private val firestore = FirebaseFirestore.getInstance()
+    private var gemsList = mutableListOf<Gems>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        bindingSearch=FragmentSearchBinding.inflate(inflater,container,false)
+        return bindingSearch.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+
+        bindingSearch.edtSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val searchTerm = s.toString().trim().lowercase()
+                if (searchTerm.isNotEmpty()) {
+                    performSearch(searchTerm)
+                } else {
+                    displayEmptyState()
                 }
             }
+        })
+    }
+
+
+    private fun setupRecyclerView() {
+        searchAdapter = SearchAdapter(requireContext(), gemsList)
+        bindingSearch.searchRV.apply {
+            adapter = searchAdapter
+            layoutManager = GridLayoutManager(requireContext(),2)
+        }
+    }
+
+    private fun performSearch(searchTerm: String) {
+        firestore.collection("gems")
+            .whereEqualTo("nameId", searchTerm)
+            .get()
+            .addOnSuccessListener { documents ->
+
+                Log.d("SearchFragment", "Searching for term: $searchTerm")
+                gemsList.clear()
+                for (document in documents) {
+                    val gem = document.toObject(Gems::class.java)
+                    gemsList.add(gem)
+                }
+                if (gemsList.isEmpty()) {
+                    displayEmptyState()
+                } else {
+                    displaySearchResults()
+                    searchAdapter.notifyDataSetChanged()
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle failures gracefully
+                displayEmptyState()
+            }
+    }
+
+    private fun displaySearchResults() {
+        bindingSearch.searchRV.visibility = View.VISIBLE
+        bindingSearch.textViewEmpty.visibility = View.GONE
+    }
+
+    private fun displayEmptyState() {
+        bindingSearch.searchRV.visibility = View.GONE
+        bindingSearch.textViewEmpty.visibility = View.VISIBLE
     }
 }
