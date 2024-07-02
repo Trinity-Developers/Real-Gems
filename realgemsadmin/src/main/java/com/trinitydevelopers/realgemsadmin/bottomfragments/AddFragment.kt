@@ -44,6 +44,7 @@ class AddFragment : Fragment() {
             }
             else{
                 val gemsData = Gems(name, cut, origin, shape, type, composition, treatment, color, carats)
+                Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
                 val db = FirebaseFirestore.getInstance()
                 db.collection("Gems").add(gemsData).addOnSuccessListener {
                     Toast.makeText(requireContext(), "Added Successfully", Toast.LENGTH_SHORT)
