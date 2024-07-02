@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "752545013486",
+    "project_id": "real-gems",
+    "storage_bucket": "real-gems.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752545013486:android:501fcb5248ae48d9a85dff",
+        "android_client_info": {
+          "package_name": "com.trinitydevelopers.realgems"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4MXjGR9FS8wlEYoJ8Mp_1PmY21GRABNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752545013486:android:2c44b77812b83100a85dff",
+        "android_client_info": {
+          "package_name": "com.trinitydevelopers.realgemsadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4MXjGR9FS8wlEYoJ8Mp_1PmY21GRABNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
