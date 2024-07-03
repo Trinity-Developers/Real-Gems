@@ -40,7 +40,7 @@ buildFeatures{
 
 dependencies {
     implementation ("com.google.firebase:firebase-firestore-ktx:25.0.0")
-    implementation ("com.airbnb.android:lottie:4.2.0")
+        implementation ("com.airbnb.android:lottie:4.2.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
