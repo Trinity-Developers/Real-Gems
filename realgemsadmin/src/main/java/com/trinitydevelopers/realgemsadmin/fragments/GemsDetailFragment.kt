@@ -1,60 +1,162 @@
 package com.trinitydevelopers.realgemsadmin.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import com.trinitydevelopers.realgemsadmin.R
+import com.trinitydevelopers.realgemsadmin.adapter.ImagePagerAdapter
+import com.trinitydevelopers.realgemsadmin.databinding.FragmentGemsDetailBinding
+import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [GemsDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GemsDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentGemsDetailBinding
+    private lateinit var selectedGem: Gems
+    private lateinit var firestore: FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+        // Initialize Firestore
+        firestore = FirebaseFirestore.getInstance()
 
+        // Retrieve selectedGem from arguments
+        arguments?.let {
+            selectedGem = it.getSerializable("selectedGem") as Gems
+        } ?: throw IllegalArgumentException("Selected gem must not be null")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gems_detail, container, false)
+        binding=FragmentGemsDetailBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GemsDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GemsDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Populate UI with gem details
+        populateGemDetails(selectedGem)
+
+        // Set initial pin/unpin icon state
+        updatePinIcon(selectedGem.pinned)
+
+
+        // Handle delete button click
+        binding.gemsDetailDelete.setOnClickListener {
+            deleteGem()
+        }
+
+        // Handle edit button click
+        binding.gemsDetailEdit.setOnClickListener {
+            navigateToEditFragment()
+        }
+
+        // Handle pin/unpin button click
+        binding.gemsDetailPinUnpin.setOnClickListener {
+            togglePinStatus()
+        }
+
+//        selectedGem.let { gem ->
+//            // Populate UI with gem details
+//            binding.gemsDetailName.text = gem.nameId
+//            binding.gemsDetailCarats.text = gem.carats.toString()
+//            binding.gemsDetailComposition.text = gem.compositionId
+//            binding.gemsDetailCut.text = gem.cutId
+//            binding.gemsDetailOrigin.text = gem.origin
+//            binding.gemsDetailShape.text = gem.shapeId
+//            binding.gemsDetailTreatment.text = gem.treatmentId
+//            binding.gemsDetailColor.text = gem.color
+//
+//            // Set initial pin/unpin icon
+//            if (gem.isPinned) {
+//                binding.gemsDetailPinUnpin.setImageResource(R.drawable.pinned_icon)
+//            } else {
+//                binding.gemsDetailPinUnpin.setImageResource(R.drawable.unpinned_icon)
+//            }
+//            // Load images into ViewPager2
+//            val viewPager = binding.viewPager
+//            val imageUrls = gem.imageUrls
+//            viewPager.adapter = ImagePagerAdapter(imageUrls)
+//        }
+
+
+    }
+
+    private fun populateGemDetails(gem: Gems) {
+        binding.gemsDetailName.text = gem.nameId
+        binding.gemsDetailCarats.text = gem.carats.toString()
+        binding.gemsDetailComposition.text = gem.compositionId
+        binding.gemsDetailCut.text = gem.cutId
+        binding.gemsDetailOrigin.text = gem.origin
+        binding.gemsDetailShape.text = gem.shapeId
+        binding.gemsDetailTreatment.text = gem.treatmentId
+        binding.gemsDetailColor.text = gem.color
+
+        // Load images into ViewPager2
+        val viewPager = binding.viewPager
+        val imageUrls = gem.imageUrls
+        viewPager.adapter = ImagePagerAdapter(imageUrls)
+    }
+    private fun togglePinStatus() {
+        selectedGem.pinned = !selectedGem.pinned
+
+        firestore.collection("gems")
+            .document(selectedGem.gemId!!)
+            .update("pinned", selectedGem.pinned)
+            .addOnSuccessListener {
+                updatePinIcon(selectedGem.pinned)
+                Toast.makeText(requireContext(), if (selectedGem.pinned) "Pinned" else "Unpinned", Toast.LENGTH_SHORT).show()
             }
+            .addOnFailureListener { e ->
+                Log.e("GemsDetailFragment", "Error updating pin status", e)
+                Toast.makeText(requireContext(), "Error updating pin status", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun updatePinIcon(isPinned: Boolean) {
+        if (isPinned) {
+            binding.gemsDetailPinUnpin.setImageResource(R.drawable.pinned_icon)
+        } else {
+            binding.gemsDetailPinUnpin.setImageResource(R.drawable.unpinned_icon)
+        }
+    }
+    private fun deleteGem() {
+        val firestore = FirebaseFirestore.getInstance()
+        val gemId = selectedGem.gemId ?: return // Exit if gemId is null
+
+        firestore.collection("gems").document(selectedGem.gemId!!)
+            .delete()
+            .addOnSuccessListener {
+                Log.d("GemsDetailFragment", "DocumentSnapshot successfully deleted!")
+                Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show()
+
+                // Navigate back or refresh the list of gems
+                activity?.onBackPressed() // Example: Go back to previous fragment
+            }
+            .addOnFailureListener { e ->
+                Log.e("GemsDetailFragment", "Error deleting document", e)
+                Toast.makeText(requireContext(), "Error deleting gem", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun navigateToEditFragment() {
+        val bundle = Bundle()
+        bundle.putSerializable("selectedGem", selectedGem)
+
+        val editFragment = EditGemsFragment()
+        editFragment.arguments = bundle
+
+        // Navigate to EditGemFragment
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.frame_container, editFragment)
+            ?.addToBackStack(null)
+            ?.commit()
     }
 }

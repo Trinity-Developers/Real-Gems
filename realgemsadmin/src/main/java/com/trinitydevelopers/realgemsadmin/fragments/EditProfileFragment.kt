@@ -1,60 +1,132 @@
 package com.trinitydevelopers.realgemsadmin.fragments
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import com.trinitydevelopers.realgemsadmin.R
+import com.trinitydevelopers.realgemsadmin.databinding.FragmentEditProfileBinding
+import com.trinitydevelopers.realgemsadmin.databinding.FragmentProfileBinding
+import com.trinitydevelopers.realgemsadmin.pojos.Profile
+import java.util.UUID
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EditProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+private lateinit var binding: FragmentEditProfileBinding
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var storageRef: StorageReference
+    private var imageUri: Uri? = null
+    private var currentUserId = "currentUserId"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+        binding=FragmentEditProfileBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        firestore = FirebaseFirestore.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference.child("profile_images")
+
+        // Load existing profile data for editing
+        loadProfileData()
+
+        binding.editProfileImg.setOnClickListener {
+            selectImage()
+        }
+
+        binding.btnEditProfileSave.setOnClickListener {
+            saveProfileChanges()
+        }
+    }
+    private fun loadProfileData() {
+        // Fetch profile data from Firestore and populate UI elements for editing
+        firestore.collection("users")
+            .document(currentUserId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profile = document.toObject<Profile>()
+                    // Bind profile data to UI elements for editing
+                    Picasso.get().load(profile?.profileImageUrl).into(binding.editProfileImg)
+                    binding.edtEditProfileName.setText(profile?.name)
+                    binding.edtEditProfileContact.setText(profile?.contact)
+                    binding.edtEditProfileAddress.setText(profile?.address)
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
+    }
+    private fun selectImage() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        resultLauncher.launch(intent)
+    }
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            data?.data?.let { uri ->
+                imageUri = uri
+                binding.editProfileImg.setImageURI(uri)
+            }
+        }
+    }
+    private fun saveProfileChanges() {
+        val name = binding.edtEditProfileName.text.toString().trim()
+        val contact = binding.edtEditProfileContact.text.toString().trim()
+        val address = binding.edtEditProfileAddress.text.toString().trim()
+
+        if (name.isEmpty() || contact.isEmpty() || address.isEmpty()) {
+            // Handle empty fields
+            return
+        }
+
+        // Upload image to Firebase Storage
+        imageUri?.let { uri ->
+            val imageRef = storageRef.child(UUID.randomUUID().toString())
+            imageRef.putFile(uri)
+                .addOnSuccessListener { taskSnapshot ->
+                    // Image uploaded successfully, get its download URL
+                    imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                        // Save profile data to Firestore
+                        val updatedProfile = Profile(name, contact, address, downloadUri.toString())
+                        firestore.collection("users")
+                            .document(currentUserId)
+                            .set(updatedProfile)
+                            .addOnSuccessListener {
+                                // Profile updated successfully
+                                requireActivity().supportFragmentManager.popBackStack()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e(TAG, "Error updating profile", e)
+                                // Handle error
+                            }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error uploading image", e)
+                    // Handle image upload error
+                }
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        private const val TAG = "EditProfileFragment"
     }
 }

@@ -39,6 +39,7 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupSpinners()
 
+        binding.progressBar.visibility = View.GONE
         // Set up click listeners for image buttons
         binding.buttonImage1.setOnClickListener { pickImageForImageView(0) }
         binding.buttonImage2.setOnClickListener { pickImageForImageView(1) }
@@ -47,6 +48,8 @@ class AddFragment : Fragment() {
 
 
         binding.buttonAddGem.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.buttonAddGem.isEnabled = false // Disable the add button
             addGem()
         }
     }
@@ -87,6 +90,7 @@ class AddFragment : Fragment() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), index)
         }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode in 0..3) {
@@ -97,7 +101,6 @@ class AddFragment : Fragment() {
             }
         }
     }
-
     private fun updateImageView(index: Int, uri: Uri) {
         when (index) {
             0 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView1)
@@ -107,24 +110,16 @@ class AddFragment : Fragment() {
         }
     }
 
-    private fun pickImages() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Pictures"), PICK_IMAGES_REQUEST_CODE)
-    }
+
     private fun updateImageViews() {
         val imageViews = listOf(binding.imageView1, binding.imageView2, binding.imageView3, binding.imageView4)
 
-        // Clear all image views initially
-        imageViews.forEach { imageView ->
+        imageViews.forEachIndexed { index, imageView ->
             Picasso.get()
                 .load(R.drawable.gems_splash)
                 .into(imageView)
         }
 
-        // Load selected images into corresponding image views
         selectedImages.forEachIndexed { index, uri ->
             if (index < imageViews.size) {
                 Picasso.get()
@@ -137,13 +132,17 @@ class AddFragment : Fragment() {
     }
 
 
+
     private fun addGem() {
         if (selectedImages.size != 4) {
+            binding.progressBar.visibility = View.GONE
+            binding.buttonAddGem.isEnabled = true // Re-enable the add button
             Toast.makeText(context, "Please select exactly 4 images", Toast.LENGTH_SHORT).show()
             return
         }
 
         val gemsData = Gems(
+            gemId = firestore.collection("gems").document().id, // Generate new gemId
             nameId = binding.spinnerName.selectedItem.toString(),
             cutId = binding.spinnerCut.selectedItem.toString(),
             origin = binding.editTextOrigin.text.toString(),
@@ -151,15 +150,19 @@ class AddFragment : Fragment() {
             compositionId = binding.spinnerComposition.selectedItem.toString(),
             treatmentId = binding.spinnerTreatment.selectedItem.toString(),
             color = binding.editTextColor.text.toString(),
-            carats = binding.editTextCarats.text.toString().toDouble()
+            carats = binding.editTextCarats.text.toString().toDouble(),
+            imageUrls = mutableListOf() // Will be updated after uploading images
         )
 
-        val gemRef = firestore.collection("gems").document()
+        val gemRef = firestore.collection("gems").document(gemsData.gemId!!)
         gemRef.set(gemsData)
             .addOnSuccessListener {
                 uploadImages(gemRef.id)
+                Toast.makeText(context, "Gem added successfully", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
+                binding.progressBar.visibility = View.GONE
+                binding.buttonAddGem.isEnabled = true // Re-enable the add button
                 Log.w("AddFragment", "Error adding document", e)
                 Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
             }
@@ -178,10 +181,14 @@ class AddFragment : Fragment() {
                             firestore.collection("gems").document(gemId)
                                 .update("imageUrls", imageUrls)
                                 .addOnSuccessListener {
+                                    binding.progressBar.visibility = View.GONE
+                                    binding.buttonAddGem.isEnabled = true // Re-enable the add button
                                     Toast.makeText(context, "Gem added successfully", Toast.LENGTH_SHORT).show()
                                     clearFields()
                                 }
                                 .addOnFailureListener { e ->
+                                    binding.progressBar.visibility = View.GONE
+                                    binding.buttonAddGem.isEnabled = true // Re-enable the add button
                                     Log.w("AddFragment", "Error updating document", e)
                                     Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
                                 }
@@ -189,6 +196,8 @@ class AddFragment : Fragment() {
                     }
                 }
                 .addOnFailureListener { e ->
+                    binding.progressBar.visibility = View.GONE
+                    binding.buttonAddGem.isEnabled = true // Re-enable the add button
                     Log.w("AddFragment", "Error uploading image", e)
                     Toast.makeText(context, "Error uploading images", Toast.LENGTH_SHORT).show()
                 }

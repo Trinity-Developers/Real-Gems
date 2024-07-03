@@ -1,13 +1,19 @@
 package com.trinitydevelopers.realgemsadmin.pojos
 
+import java.io.Serializable
+
 data class Gems(
-    val nameId: String?="",
-    val cutId: String?="",
-    val origin: String?="",
-    val shapeId: String?="",
-    val compositionId: String?="",
-    val treatmentId: String?="",
-    val color: String?="",
-    val carats: Double?=0.0,
-    val imageUrls: List<String> = emptyList() // Optional, can be set later
-)
+    var gemId: String?="",
+    var nameId: String?="",
+    var cutId: String?="",
+    var origin: String?="",
+    var shapeId: String?="",
+    var compositionId: String?="",
+    var treatmentId: String?="",
+    var color: String?="",
+    var carats: Double?=0.0,
+    val imageUrls: MutableList<String> = mutableListOf() ,// Optional, can be set later,
+    var pinned: Boolean = false
+
+
+): Serializable
