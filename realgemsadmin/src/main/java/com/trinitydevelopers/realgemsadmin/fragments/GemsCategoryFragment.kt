@@ -1,60 +1,87 @@
 package com.trinitydevelopers.realgemsadmin.fragments
 
 import android.os.Bundle
+import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
 import com.trinitydevelopers.realgemsadmin.R
+import com.trinitydevelopers.realgemsadmin.adapter.CategoriesAdapter
+import com.trinitydevelopers.realgemsadmin.adapter.ProductAdapter
+import com.trinitydevelopers.realgemsadmin.databinding.FragmentGemsCategoryBinding
+import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [GemsCategoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GemsCategoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentGemsCategoryBinding
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var categoriesAdapter: CategoriesAdapter
+    private var gemsList = mutableListOf<Gems>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gems_category, container, false)
+        binding=FragmentGemsCategoryBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GemsCategoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GemsCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        firestore = FirebaseFirestore.getInstance()
+        //categories
+        setupRecyclerView()
+        fetchGemsData()
+    }
+
+
+    private fun fetchGemsData() {
+        firestore.collection("gems")
+            .get()
+            .addOnSuccessListener { documents ->
+                val uniqueCategoriesMap = mutableMapOf<String, Gems>()
+
+                for (document in documents) {
+                    val gem = document.toObject(Gems::class.java)
+                    val category = gem.nameId ?: continue
+
+                    if (!uniqueCategoriesMap.containsKey(category)) {
+                        uniqueCategoriesMap[category] = gem
+                    }
                 }
+
+                val uniqueCategoriesList = uniqueCategoriesMap.values.toList()
+                updateRecyclerView(uniqueCategoriesList)
             }
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
+    }
+
+    private fun updateRecyclerView(categories: List<Gems>) {
+        categoriesAdapter.submitList(categories)
+    }
+
+    private fun setupRecyclerView() {
+        categoriesAdapter = CategoriesAdapter(requireContext(), gemsList) { selectedCategory ->
+            navigateToAllGems(selectedCategory)
+        }
+        binding.gemsCategoryRV.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.gemsCategoryRV.adapter = categoriesAdapter
+    }
+
+    private fun navigateToAllGems(selectedCategory: String) {
+        val fragment = AllGemsFragment().apply {
+            arguments = Bundle().apply {
+                putString("selectedCategory", selectedCategory)
+            }
+        }
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

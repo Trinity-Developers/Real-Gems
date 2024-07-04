@@ -5,56 +5,87 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
 import com.trinitydevelopers.realgemsadmin.R
+import com.trinitydevelopers.realgemsadmin.adapter.ProductAdapter
+import com.trinitydevelopers.realgemsadmin.databinding.FragmentAllGemsBinding
+import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AllGemsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AllGemsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+   private lateinit var binding: FragmentAllGemsBinding
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var productAdapter: ProductAdapter
+    private var gemsList = mutableListOf<Gems>()
+    private var selectedCategory: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_gems, container, false)
+        binding= FragmentAllGemsBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AllGemsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AllGemsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        firestore = FirebaseFirestore.getInstance()
+
+        selectedCategory = arguments?.getString("selectedCategory")
+
+        setupRecyclerView()
+        fetchGemsData()
+    }
+
+    private fun fetchGemsData() {
+        selectedCategory?.let { category ->
+            firestore.collection("gems")
+                .whereEqualTo("nameId", category)
+                .get()
+                .addOnSuccessListener { documents ->
+                    gemsList.clear()
+                    for (document in documents) {
+                        val gem = document.toObject(Gems::class.java)
+                        gemsList.add(gem)
+                    }
+                    updateRecyclerView()
                 }
-            }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to load gems: ${exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+    }
+
+    private fun updateRecyclerView() {
+        productAdapter.notifyDataSetChanged()
+    }
+
+    private fun setupRecyclerView() {
+        productAdapter = ProductAdapter(requireContext(), gemsList) { gem ->
+            navigateToDetailFragment(gem)
+        }
+        binding.allGemsFromCategoriesRV.layoutManager =
+            GridLayoutManager(requireContext(), 2)
+        binding.allGemsFromCategoriesRV.adapter = productAdapter
+    }
+
+    private fun navigateToDetailFragment(gem: Gems) {
+        val detailFragment = GemsDetailFragment()
+        val bundle = Bundle().apply {
+            putSerializable("selectedGem", gem)
+        }
+        detailFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, detailFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

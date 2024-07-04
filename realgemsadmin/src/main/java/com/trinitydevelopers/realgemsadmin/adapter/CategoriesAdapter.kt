@@ -11,7 +11,11 @@ import com.squareup.picasso.Picasso
 import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-class CategoriesAdapter (val context: Context, private val gemsList: List<Gems>) : RecyclerView.Adapter<CategoriesAdapter.categories_ViewHolder>() {
+class CategoriesAdapter (val context: Context,
+                         private var gemsList: List<Gems>,
+                         private val onItemClick: (String) -> Unit
+
+) : RecyclerView.Adapter<CategoriesAdapter.categories_ViewHolder>() {
     class categories_ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.categories_name)
         val image=itemView.findViewById<ImageView>(R.id.categories_img)
@@ -34,5 +38,14 @@ class CategoriesAdapter (val context: Context, private val gemsList: List<Gems>)
         holder.name.isSelected=true
         Picasso.get().load(gem.imageUrls[0]).into(holder.image)
 
+        holder.itemView.setOnClickListener {
+            gem.nameId?.let { nameId ->
+                onItemClick(nameId)
+            }
+    }
+    }
+    fun submitList(newCategories: List<Gems>) {
+        gemsList = newCategories
+        notifyDataSetChanged()
     }
 }

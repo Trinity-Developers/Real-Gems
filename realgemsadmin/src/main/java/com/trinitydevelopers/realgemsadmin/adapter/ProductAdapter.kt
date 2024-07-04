@@ -12,7 +12,10 @@ import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.adapter.CategoriesAdapter.categories_ViewHolder
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-class ProductAdapter (val context: Context, private val gemsList: List<Gems>) : RecyclerView.Adapter<ProductAdapter.product_ViewHolder>() {
+class ProductAdapter (val context: Context,
+                      private var gemsList: List<Gems>,
+                      private val itemClickListener: (Gems) -> Unit
+) : RecyclerView.Adapter<ProductAdapter.product_ViewHolder>() {
     class product_ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView)  {
         val image=itemView.findViewById<ImageView>(R.id.product_img)
         val name=itemView.findViewById<TextView>(R.id.product_name)
@@ -36,5 +39,12 @@ class ProductAdapter (val context: Context, private val gemsList: List<Gems>) : 
         holder.composition.text=gem.compositionId
         holder.name.isSelected=true
         Picasso.get().load(gem.imageUrls[0]).into(holder.image)
+        holder.itemView.setOnClickListener {
+            itemClickListener(gem)
+        }
+    }
+    fun submitList(newCategories: List<Gems>) {
+        gemsList = newCategories
+        notifyDataSetChanged()
     }
 }
