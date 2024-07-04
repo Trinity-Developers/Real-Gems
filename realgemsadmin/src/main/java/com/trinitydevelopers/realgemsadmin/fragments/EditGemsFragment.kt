@@ -208,6 +208,8 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     }
 
     private fun updateFirestoreWithNewImageUrls() {
+        if (isAdded){
+
         val firestore = FirebaseFirestore.getInstance()
         selectedGem?.let { gem ->
             firestore.collection("gems").document(gem.gemId!!)
@@ -221,9 +223,12 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
                     Toast.makeText(requireContext(), "Failed to update image URLs: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+        }
+
     }
 
     private fun updateGemData(updatedGem: Gems) {
+
         updatedGem.apply {
             nameId = binding.spinnerEditName.selectedItem.toString()
             cutId = binding.spinnerEditCut.selectedItem.toString()

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -27,6 +28,7 @@ private lateinit var binding: FragmentEditProfileBinding
     private lateinit var storageRef: StorageReference
     private var imageUri: Uri? = null
     private var currentUserId = "currentUserId"
+    private var currentProfileImageUrl: String = ""
 
 
     override fun onCreateView(
@@ -40,8 +42,11 @@ private lateinit var binding: FragmentEditProfileBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         firestore = FirebaseFirestore.getInstance()
         storageRef = FirebaseStorage.getInstance().reference.child("profile_images")
+
+        binding.progressBar2.visibility = View.GONE
 
         // Load existing profile data for editing
         loadProfileData()
@@ -51,6 +56,8 @@ private lateinit var binding: FragmentEditProfileBinding
         }
 
         binding.btnEditProfileSave.setOnClickListener {
+            binding.progressBar2.visibility = View.VISIBLE
+            binding.btnEditProfileSave.isEnabled = false
             saveProfileChanges()
         }
     }
@@ -67,17 +74,21 @@ private lateinit var binding: FragmentEditProfileBinding
                     binding.edtEditProfileName.setText(profile?.name)
                     binding.edtEditProfileContact.setText(profile?.contact)
                     binding.edtEditProfileAddress.setText(profile?.address)
+                    currentProfileImageUrl = profile?.profileImageUrl ?: ""
                 }
             }
             .addOnFailureListener { exception ->
                 // Handle failure
+                Log.e(TAG, "Error loading profile", exception)
             }
     }
+
     private fun selectImage() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         resultLauncher.launch(intent)
     }
+
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
@@ -87,6 +98,7 @@ private lateinit var binding: FragmentEditProfileBinding
             }
         }
     }
+
     private fun saveProfileChanges() {
         val name = binding.edtEditProfileName.text.toString().trim()
         val contact = binding.edtEditProfileContact.text.toString().trim()
@@ -94,6 +106,9 @@ private lateinit var binding: FragmentEditProfileBinding
 
         if (name.isEmpty() || contact.isEmpty() || address.isEmpty()) {
             // Handle empty fields
+            Toast.makeText(requireContext(), "Enter all details", Toast.LENGTH_SHORT).show()
+            binding.progressBar2.visibility = View.GONE
+            binding.btnEditProfileSave.isEnabled = true
             return
         }
 
@@ -105,26 +120,43 @@ private lateinit var binding: FragmentEditProfileBinding
                     // Image uploaded successfully, get its download URL
                     imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                         // Save profile data to Firestore
-                        val updatedProfile = Profile(name, contact, address, downloadUri.toString())
-                        firestore.collection("users")
-                            .document(currentUserId)
-                            .set(updatedProfile)
-                            .addOnSuccessListener {
-                                // Profile updated successfully
-                                requireActivity().supportFragmentManager.popBackStack()
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e(TAG, "Error updating profile", e)
-                                // Handle error
-                            }
+                        saveProfileToFirestore(name, contact, address, downloadUri.toString())
                     }
                 }
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Error uploading image", e)
+                    binding.progressBar2.visibility = View.GONE
+                    binding.btnEditProfileSave.isEnabled = true
                     // Handle image upload error
+                    Toast.makeText(requireContext(), "Error uploading image", Toast.LENGTH_SHORT).show()
                 }
+        } ?: run {
+            // Save profile data without image change
+            saveProfileToFirestore(name, contact, address, currentProfileImageUrl)
         }
     }
+
+    private fun saveProfileToFirestore(name: String, contact: String, address: String, profileImageUrl: String) {
+        val updatedProfile = Profile(name, contact, address, profileImageUrl)
+        firestore.collection("users")
+            .document(currentUserId)
+            .set(updatedProfile)
+            .addOnSuccessListener {
+                // Profile updated successfully
+                binding.progressBar2.visibility = View.GONE
+                binding.btnEditProfileSave.isEnabled = true
+                Toast.makeText(requireContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error updating profile", e)
+                binding.progressBar2.visibility = View.GONE
+                binding.btnEditProfileSave.isEnabled = true
+                // Handle error
+                Toast.makeText(requireContext(), "Error updating profile", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     companion object {
         private const val TAG = "EditProfileFragment"
