@@ -17,7 +17,7 @@ class ProductAdapter (val context: Context, private val gemsList: List<Gems>) : 
         val image=itemView.findViewById<ImageView>(R.id.product_img)
         val name=itemView.findViewById<TextView>(R.id.product_name)
         val carats=itemView.findViewById<TextView>(R.id.product_carats)
-        val composition=itemView.findViewById<TextView>(R.id.product_compoition)
+        val composition=itemView.findViewById<TextView>(R.id.product_composition)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): product_ViewHolder {
