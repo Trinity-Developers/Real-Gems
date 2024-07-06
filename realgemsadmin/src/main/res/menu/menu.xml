@@ -2,18 +2,17 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <item android:id="@+id/bottom_home"
         android:icon="@drawable/home_icon"
-        android:title="Home"
+        android:title="Explore"
         />
-
-
+    <item android:id="@+id/bottom_allProduct"
+        android:icon="@drawable/gems_list"
+        android:title="Gems"/>
     <item android:id="@+id/bottom_add"
         android:icon="@drawable/add_icon"
-        android:title="Add"
+        android:title="Add On"
         />
-
     <item android:id="@+id/bottom_profile"
         android:icon="@drawable/profile_icon"
         android:title="Profile"/>

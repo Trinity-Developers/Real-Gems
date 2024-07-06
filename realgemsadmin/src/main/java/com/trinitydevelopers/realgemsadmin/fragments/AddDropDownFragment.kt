@@ -49,6 +49,21 @@ class AddDropDownFragment : Fragment() {
             return
         }
 
+        val bundle = Bundle().apply {
+            putString("selectedType", selectedType)
+            putString("value", value)
+            putString("description", description)
+
+        }
+        val allGemsFragment = AllGemsFragment().apply {
+            arguments = bundle
+
+        }
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.frame_container, allGemsFragment)
+            ?.addToBackStack(null)
+            ?.commit()
+
         val listItem = ListItem(
             value = value,
             description = description
@@ -65,5 +80,7 @@ class AddDropDownFragment : Fragment() {
                 Toast.makeText(context, "Error adding item: $e", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 
 }

@@ -12,19 +12,19 @@ import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.adapter.CategoriesAdapter.categories_ViewHolder
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
-class ProductAdapter (val context: Context,
-                      private var gemsList: List<Gems>,
-                      private val itemClickListener: (Gems) -> Unit
-) : RecyclerView.Adapter<ProductAdapter.product_ViewHolder>() {
+class PinProductAdapter (val context: Context,
+                         private var gemsList: List<Gems>,
+                         private val itemClickListener: (Gems) -> Unit
+) : RecyclerView.Adapter<PinProductAdapter.product_ViewHolder>() {
     class product_ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView)  {
-        val image=itemView.findViewById<ImageView>(R.id.product_img)
-        val name=itemView.findViewById<TextView>(R.id.product_name)
-        val carats=itemView.findViewById<TextView>(R.id.product_carats)
-        val composition=itemView.findViewById<TextView>(R.id.product_composition)
+        val image=itemView.findViewById<ImageView>(R.id.pinproduct_img)
+        val name=itemView.findViewById<TextView>(R.id.pinproduct_name)
+        val carats=itemView.findViewById<TextView>(R.id.pinproduct_carats)
+        val composition=itemView.findViewById<TextView>(R.id.pinproduct_compoition)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): product_ViewHolder {
-        val view= LayoutInflater.from(context).inflate(R.layout.viewholder_product,parent,false)
+        val view= LayoutInflater.from(context).inflate(R.layout.viewholder_pinproduct,parent,false)
         return product_ViewHolder(view)
     }
 
@@ -43,7 +43,6 @@ class ProductAdapter (val context: Context,
         holder.itemView.setOnClickListener {
             itemClickListener(gem)
         }
-
     }
     fun submitList(newCategories: List<Gems>) {
         gemsList = newCategories

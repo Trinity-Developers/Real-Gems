@@ -17,20 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="vertical"
-            android:layout_marginHorizontal="20dp">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="8dp">
 
             <ImageView
                 android:id="@+id/product_img"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="160dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:background="#F9F9F9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -38,17 +35,10 @@
 
             <TextView
                 android:id="@+id/product_name"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:freezesText="true"
-                android:scrollHorizontally="true"
-                android:text="name"
-                android:textSize="24sp"
+                android:text="Yellow Sapphiere (pukhraj)"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,8 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="carats"
-                android:textSize="18sp"
-
+                android:textSize="14sp"
+                android:fontFamily="@font/roboto_condensed_regular"
+                android:textColor="@color/red"
+                android:textStyle="bold"
                 android:gravity="start"
 
                 app:layout_constraintEnd_toEndOf="parent"
@@ -73,17 +65,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
                 android:layout_marginBottom="10dp"
                 android:text="composition"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:gravity="start"
-
+                android:textColor="@color/darkBlue"
+                android:fontFamily="@font/roboto_condensed_regular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/product_carats"
                 app:layout_constraintTop_toBottomOf="@+id/product_carats" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

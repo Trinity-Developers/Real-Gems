@@ -1,31 +1,38 @@
 package com.trinitydevelopers.realgemsadmin.bottomfragments
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.interfaces.ItemClickListener
+import com.denzcoskun.imageslider.models.SlideModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.adapter.CategoriesAdapter
-import com.trinitydevelopers.realgemsadmin.adapter.GemsAdapter
+import com.trinitydevelopers.realgemsadmin.adapter.PinProductAdapter
 import com.trinitydevelopers.realgemsadmin.adapter.ProductAdapter
 import com.trinitydevelopers.realgemsadmin.databinding.FragmentExploreBinding
 import com.trinitydevelopers.realgemsadmin.fragments.AllGemsFragment
 import com.trinitydevelopers.realgemsadmin.fragments.GemsCategoryFragment
 import com.trinitydevelopers.realgemsadmin.fragments.GemsDetailFragment
-import com.trinitydevelopers.realgemsadmin.fragments.SearchFragment
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
 class ExploreFragment : Fragment() {
     private lateinit var binding: FragmentExploreBinding
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var pinnedProductAdapter: ProductAdapter
+    private lateinit var productAdapter: ProductAdapter
 
     private var gemsList = mutableListOf<Gems>()
 
@@ -42,6 +49,51 @@ class ExploreFragment : Fragment() {
 
         firestore = FirebaseFirestore.getInstance()
 
+        val text = "Real Gems"
+        val spannableString = SpannableString(text)
+
+        // Set color for "Constitution"
+        val saffronColor = ContextCompat.getColor(requireContext(), R.color.red)
+        spannableString.setSpan(
+            ForegroundColorSpan(saffronColor),
+            0,
+            4,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Set color for "O F"
+        val blueColor = ContextCompat.getColor(requireContext(), R.color.purple)
+        spannableString.setSpan(
+            ForegroundColorSpan(blueColor),
+            5,
+            8,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Set the SpannableString to a TextView
+        binding.realGemsTv.text = spannableString
+
+
+        //image slider
+        val imageList = ArrayList<SlideModel>() // Create image list
+        imageList.add(SlideModel(R.drawable.image_three, ScaleTypes.FIT))
+        imageList.add(SlideModel(R.drawable.image_two, ScaleTypes.FIT))
+        imageList.add(SlideModel(R.drawable.images, ScaleTypes.FIT))
+
+        val imageSlider=binding.imageSlider
+        imageSlider.setImageList(imageList, ScaleTypes.FIT)
+        imageSlider.setItemClickListener(object : ItemClickListener {
+            override fun onItemSelected(position: Int) {
+                val itemPosition=imageList[position]
+                val itemMessage="Selected image $position"
+                Toast.makeText(requireContext(), itemMessage, Toast.LENGTH_SHORT).show()
+                // You can listen here.
+            }
+            override fun doubleClick(position: Int) {
+                // Do not use onItemSelected if you are using a double click listener at the same time.
+                // Its just added for specific cases.
+                // Listen for clicks under 250 milliseconds.
+            } })
 
 
         binding.tvExploreSeeAllCategories.setOnClickListener {
@@ -56,9 +108,6 @@ class ExploreFragment : Fragment() {
         fetchGemsPinnedProductData()
 
 
-        binding.edtExploreSearch.setOnClickListener {
-            navigateToSearchFragment()
-        }
     }
 
     //categories
@@ -121,12 +170,12 @@ class ExploreFragment : Fragment() {
     }
 
     private fun setupPinnedProductRecyclerView() {
-        pinnedProductAdapter = ProductAdapter(requireContext(), listOf()) { selectedGem ->
+        productAdapter = ProductAdapter(requireContext(), listOf()) { selectedGem ->
             navigateToGemsDetail(selectedGem)
         }
         binding.pinnedProductRV.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.pinnedProductRV.adapter = pinnedProductAdapter
+            GridLayoutManager(context, 2)
+        binding.pinnedProductRV.adapter = productAdapter
     }
     private fun navigateToGemsDetail(selectedGem: Gems) {
         val bundle = Bundle().apply {
@@ -159,14 +208,9 @@ class ExploreFragment : Fragment() {
     }
 
     private fun updatePinnedProductsRecyclerView(pinnedGems: List<Gems>) {
-        pinnedProductAdapter.submitList(pinnedGems)
+        productAdapter.submitList(pinnedGems)
     }
 
 
-    private fun navigateToSearchFragment() {
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame_container, SearchFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
+
 }
