@@ -3,61 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:background="@android:color/transparent"
+        android:elevation="15dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="400dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="34dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ImageView
+                android:id="@+id/product_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="#F9F9F9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/amber" />
+
+            <TextView
+                android:id="@+id/product_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:freezesText="true"
+                android:scrollHorizontally="true"
+                android:text="name"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/product_img" />
 
-                <ImageView
-                    android:id="@+id/product_img"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/amber" />
+            <TextView
+                android:id="@+id/product_carats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="carats"
+                android:textSize="18sp"
 
-                <TextView
-                    android:id="@+id/product_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="name"
-                    app:layout_constraintStart_toStartOf="@+id/product_img"
-                    app:layout_constraintTop_toBottomOf="@+id/product_img" />
+                android:gravity="start"
 
-                <TextView
-                    android:id="@+id/product_carats"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="carats"
-                    app:layout_constraintStart_toStartOf="@+id/product_name"
-                    app:layout_constraintTop_toBottomOf="@+id/product_name" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/product_name"
+                app:layout_constraintTop_toBottomOf="@+id/product_name" />
 
-                <TextView
-                    android:id="@+id/product_composition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="composition"
-                    app:layout_constraintStart_toStartOf="@+id/product_carats"
-                    app:layout_constraintTop_toBottomOf="@+id/product_carats" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/product_composition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
 
-    </androidx.constraintlayout.widget.ConstraintLayout >
+                android:layout_marginBottom="10dp"
+                android:text="composition"
+                android:textSize="18sp"
+                android:gravity="start"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/product_carats"
+                app:layout_constraintTop_toBottomOf="@+id/product_carats" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 

@@ -5,6 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@android:color/transparent"
     android:layout_margin="12dp">
 
             <ImageView
@@ -13,7 +14,7 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:background="@android:color/transparent"
+                android:background="#F9F9F9"
                 android:elevation="25dp"
                 android:src="@drawable/emerald_panna"
                 android:layout_marginTop="20dp"/>
