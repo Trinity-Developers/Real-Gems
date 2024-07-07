@@ -41,16 +41,23 @@ class AddFragment : Fragment() {
 
         binding.progressBar.visibility = View.GONE
         // Set up click listeners for image buttons
-        // Set up click listeners for image views
         binding.imageView1.setOnClickListener { pickImageForImageView(0) }
         binding.imageView2.setOnClickListener { pickImageForImageView(1) }
         binding.imageView3.setOnClickListener { pickImageForImageView(2) }
         binding.imageView4.setOnClickListener { pickImageForImageView(3) }
 
+
+
         binding.buttonAddGem.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.buttonAddGem.isEnabled = false // Disable the add button
-            addGem()
+
+            if (binding.editTextOrigin.text.isEmpty()
+                && binding.editTextColor.text.isEmpty()&&binding.editTextCarats.text.isEmpty()){
+                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            }else {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.buttonAddGem.isEnabled = false // Disable the add button
+                addGem()
+            }
         }
     }
     private fun setupSpinners() {
@@ -104,7 +111,7 @@ class AddFragment : Fragment() {
     }
     private fun updateImageView(index: Int, uri: Uri) {
         when (index) {
-            0 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView1)
+            0 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.gems_splash).into(binding.imageView1)
             1 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView2)
             2 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView3)
             3 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView4)
