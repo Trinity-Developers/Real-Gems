@@ -61,7 +61,7 @@ private lateinit var binding:FragmentProfileBinding
             transaction.commit()
         }
 
-        binding.profilEidtIcon.setOnClickListener {
+        binding.pofilEditIcon.setOnClickListener {
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frame_container, EditProfileFragment())
