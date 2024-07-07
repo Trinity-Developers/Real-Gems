@@ -7,6 +7,6 @@
 
     <style name="Theme.RealGems" parent="Base.Theme.RealGems" />
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color"  >@color/white </item>
+        <item name="android:color"  >@color/darkBlue </item>
     </style>
 </resources>

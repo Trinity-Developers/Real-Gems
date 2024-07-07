@@ -39,6 +39,11 @@ buildFeatures{
 }
 
 dependencies {
+
+    implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
+    //lottie animation
+    implementation ("com.airbnb.android:lottie:4.2.0")
+
     implementation ("com.google.firebase:firebase-firestore-ktx:25.0.0")
     implementation ("com.airbnb.android:lottie:4.2.0")
     implementation ("com.squareup.picasso:picasso:2.71828")

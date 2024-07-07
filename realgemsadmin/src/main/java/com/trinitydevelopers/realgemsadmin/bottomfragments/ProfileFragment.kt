@@ -45,7 +45,7 @@ private lateinit var binding:FragmentProfileBinding
                     // Bind profile data to UI elements
                     binding.profileName.text = profile?.name
                     binding.profileContactInfo.text = profile?.contact
-                    binding.profileAdress.text = profile?.address
+                    binding.profileAderess.text = profile?.address
                     // Load profile image using Picasso or Glide
                      Picasso.get().load(profile?.profileImageUrl).into(binding.profileImg)
                 }
@@ -61,7 +61,7 @@ private lateinit var binding:FragmentProfileBinding
             transaction.commit()
         }
 
-        binding.profilEditIcon.setOnClickListener {
+        binding.profilEidtIcon.setOnClickListener {
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frame_container, EditProfileFragment())

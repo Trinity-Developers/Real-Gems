@@ -10,6 +10,8 @@ import com.trinitydevelopers.realgemsadmin.bottomfragments.AddFragment
 import com.trinitydevelopers.realgemsadmin.bottomfragments.ExploreFragment
 import com.trinitydevelopers.realgemsadmin.bottomfragments.ProfileFragment
 import com.trinitydevelopers.realgemsadmin.databinding.ActivityMainBinding
+import com.trinitydevelopers.realgemsadmin.fragments.AllGemsFragment
+import com.trinitydevelopers.realgemsadmin.fragments.GemsCategoryFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -60,6 +62,10 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.bottom_profile -> {
                     replaceFragment(ProfileFragment(), PROFILE_FRAGMENT_TAG,false)
+                    true
+                }
+                R.id.bottom_allProduct -> {
+                    replaceFragment(GemsCategoryFragment(), PROFILE_FRAGMENT_TAG,false)
                     true
                 }
                 else -> false
