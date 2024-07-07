@@ -8,14 +8,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/Soft_White"
+        >
 
         <ImageView
             android:id="@+id/editProfileImg"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="50dp"
-
             android:src="@drawable/splash"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +24,12 @@
 
         <EditText
             android:background="@drawable/edit_text_design"
+            android:drawableLeft="@drawable/profile_icon"
+            android:drawablePadding="8dp"
+            android:elevation="12dp"
             android:padding="12dp"
             android:id="@+id/edtEditProfileName"
+            android:layout_marginHorizontal="16dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -32,7 +37,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Name"
+            android:hint="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfileImg" />
@@ -40,6 +45,10 @@
         <EditText
             android:background="@drawable/edit_text_design"
             android:padding="12dp"
+            android:elevation="12dp"
+            android:drawableLeft="@drawable/add_icon"
+            android:drawablePadding="8dp"
+            android:layout_marginHorizontal="16dp"
             android:id="@+id/edtEditProfileContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,7 +57,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="text"
-            android:text="name"
+            android:hint="Contact info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +66,10 @@
         <EditText
             android:background="@drawable/edit_text_design"
             android:padding="12dp"
+            android:elevation="12dp"
+            android:drawableLeft="@drawable/home_icon"
+            android:drawablePadding="8dp"
+            android:layout_marginHorizontal="16dp"
             android:id="@+id/edtEditProfileAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -65,17 +78,23 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Name"
+            android:hint="Address"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtEditProfileContact" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/edit_profile_btn"
             android:id="@+id/btnEditProfileSave"
-            android:layout_width="wrap_content"
+            android:elevation="12dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="150dp"
+            android:layout_marginHorizontal="100dp"
             android:text="Button"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
