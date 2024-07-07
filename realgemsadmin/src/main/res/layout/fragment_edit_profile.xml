@@ -22,20 +22,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/edtEditProfileName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
+            android:hint="Name"
             android:inputType="text"
-            android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfileImg" />
 
         <EditText
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/edtEditProfileContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -44,13 +49,15 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="text"
-            android:text="name"
+            android:hint="Contact Info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtEditProfileName" />
 
         <EditText
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/edtEditProfileAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,17 +66,23 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Name"
+            android:hint="Address"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtEditProfileContact" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:background="@drawable/edit_profile_btn"
+            android:layout_marginHorizontal="32dp"
             android:id="@+id/btnEditProfileSave"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="72dp"
             android:text="Button"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:elevation="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
