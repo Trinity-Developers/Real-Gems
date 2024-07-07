@@ -41,11 +41,11 @@ class AddFragment : Fragment() {
 
         binding.progressBar.visibility = View.GONE
         // Set up click listeners for image buttons
-        binding.buttonImage1.setOnClickListener { pickImageForImageView(0) }
-        binding.buttonImage2.setOnClickListener { pickImageForImageView(1) }
-        binding.buttonImage3.setOnClickListener { pickImageForImageView(2) }
-        binding.buttonImage4.setOnClickListener { pickImageForImageView(3) }
-
+        // Set up click listeners for image views
+        binding.imageView1.setOnClickListener { pickImageForImageView(0) }
+        binding.imageView2.setOnClickListener { pickImageForImageView(1) }
+        binding.imageView3.setOnClickListener { pickImageForImageView(2) }
+        binding.imageView4.setOnClickListener { pickImageForImageView(3) }
 
         binding.buttonAddGem.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
@@ -61,42 +61,43 @@ class AddFragment : Fragment() {
         setupSpinner(binding.spinnerTreatment, "treatments")
     }
     private fun setupSpinner(spinner: Spinner, collection: String) {
-
-            firestore.collection("lists").document(collection).collection("items")
-                .get()
-                .addOnSuccessListener { documents ->
-
-                    val items = documents.map { it.getString("value") ?: "" }
-                    if (isAdded) {
-
-                        val adapter =
-                            ArrayAdapter(
-                                requireContext(),
-                                android.R.layout.simple_spinner_item,
-                                items
-                            )
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        spinner.adapter = adapter
-
-                    }
+        firestore.collection("lists").document(collection).collection("items")
+            .get()
+            .addOnSuccessListener { documents ->
+                val items = documents.map { it.getString("value") ?: "" }
+                if (isAdded) {
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        items
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.adapter = adapter
                 }
-                .addOnFailureListener { exception ->
-                    Log.w("AddFragment", "Error getting documents: ", exception)
-                }
-        }
-        private fun pickImageForImageView(index: Int) {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), index)
-        }
+            }
+            .addOnFailureListener { exception ->
+                Log.w("AddFragment", "Error getting documents: ", exception)
+            }
+    }
+
+    private fun pickImageForImageView(index: Int) {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), index)
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode in 0..3) {
             val uri = data?.data
             if (uri != null) {
-                selectedImages.add(requestCode, uri)
+                if (selectedImages.size > requestCode) {
+                    selectedImages[requestCode] = uri
+                } else {
+                    selectedImages.add(requestCode, uri)
+                }
                 updateImageView(requestCode, uri)
             }
         }
@@ -110,11 +111,10 @@ class AddFragment : Fragment() {
         }
     }
 
-
     private fun updateImageViews() {
         val imageViews = listOf(binding.imageView1, binding.imageView2, binding.imageView3, binding.imageView4)
 
-        imageViews.forEachIndexed { index, imageView ->
+        imageViews.forEach { imageView ->
             Picasso.get()
                 .load(R.drawable.gems_splash)
                 .into(imageView)
@@ -130,7 +130,6 @@ class AddFragment : Fragment() {
             }
         }
     }
-
 
 
     private fun addGem() {
@@ -167,6 +166,7 @@ class AddFragment : Fragment() {
                 Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun uploadImages(gemId: String) {
         val storageRef = storage.reference.child("gem_images/$gemId")
         val imageUrls = mutableListOf<String>()
