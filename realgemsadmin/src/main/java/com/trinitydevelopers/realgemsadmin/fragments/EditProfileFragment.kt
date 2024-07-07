@@ -61,6 +61,7 @@ private lateinit var binding: FragmentEditProfileBinding
             saveProfileChanges()
         }
     }
+
     private fun loadProfileData() {
         // Fetch profile data from Firestore and populate UI elements for editing
         firestore.collection("users")
@@ -98,6 +99,7 @@ private lateinit var binding: FragmentEditProfileBinding
             }
         }
     }
+
 
     private fun saveProfileChanges() {
         val name = binding.edtEditProfileName.text.toString().trim()
