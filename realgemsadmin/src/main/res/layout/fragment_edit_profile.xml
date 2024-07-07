@@ -22,6 +22,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/edtEditProfileName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,6 +38,8 @@
             app:layout_constraintTop_toBottomOf="@+id/editProfileImg" />
 
         <EditText
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/edtEditProfileContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,6 +55,8 @@
             app:layout_constraintTop_toBottomOf="@+id/edtEditProfileName" />
 
         <EditText
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/edtEditProfileAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

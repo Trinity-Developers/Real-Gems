@@ -18,6 +18,8 @@
 
         <EditText
             android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/editTextValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +27,8 @@
 
         <EditText
             android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_design"
+            android:padding="12dp"
             android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
