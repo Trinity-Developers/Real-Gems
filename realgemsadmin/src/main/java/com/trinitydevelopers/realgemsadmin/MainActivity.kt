@@ -36,18 +36,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment, tag: String, addToBackStack: Boolean) {
-        val fragmentInManager = supportFragmentManager.findFragmentByTag(tag)
-        if (fragmentInManager != null && fragmentInManager.isVisible) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val currentFragment = supportFragmentManager.primaryNavigationFragment
+        if (currentFragment != null && currentFragment.tag == tag) {
             return
         }
-        val transaction = supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_container, fragment, tag)
         if (addToBackStack) {
-            transaction.addToBackStack(null)
+            fragmentTransaction.addToBackStack(tag)
         }
-        transaction.commit()
+        fragmentTransaction.replace(R.id.frame_container, fragment, tag)
+        fragmentTransaction.setPrimaryNavigationFragment(fragment)
+        fragmentTransaction.setReorderingAllowed(true)
+        fragmentTransaction.commitNow()
         currentFragmentTag = tag
     }
+
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

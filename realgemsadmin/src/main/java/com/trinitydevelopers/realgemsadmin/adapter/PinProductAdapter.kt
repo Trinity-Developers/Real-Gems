@@ -34,7 +34,7 @@ class PinProductAdapter (val context: Context,
 
     override fun onBindViewHolder(holder: product_ViewHolder, position: Int) {
         val gem = gemsList[position]
-        holder.name.text=gem.nameId!!.take(14)
+        holder.name.text=gem.nameId!!.take(15)
         holder.carats.text="${gem.carats} Carats"
         holder.composition.text="${gem.compositionId}"
 

@@ -9,15 +9,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.trinitydevelopers.realgemsadmin.R
+import com.trinitydevelopers.realgemsadmin.adapter.AllGemsCategoryAdapter
 import com.trinitydevelopers.realgemsadmin.adapter.CategoriesAdapter
 import com.trinitydevelopers.realgemsadmin.adapter.ProductAdapter
 import com.trinitydevelopers.realgemsadmin.databinding.FragmentGemsCategoryBinding
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
+import com.trinitydevelopers.realgemsadmin.pojos.ListItem
 
 class GemsCategoryFragment : Fragment() {
     private lateinit var binding: FragmentGemsCategoryBinding
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var categoriesAdapter: AllGemsCategoryAdapter
     private var gemsList = mutableListOf<Gems>()
 
     override fun onCreateView(
@@ -61,27 +63,41 @@ class GemsCategoryFragment : Fragment() {
             }
     }
 
+
     private fun updateRecyclerView(categories: List<Gems>) {
         categoriesAdapter.submitList(categories)
     }
 
     private fun setupRecyclerView() {
-        categoriesAdapter = CategoriesAdapter(requireContext(), gemsList) { selectedCategory ->
+        categoriesAdapter = AllGemsCategoryAdapter(requireContext(), gemsList) { selectedCategory ->
             navigateToAllGems(selectedCategory)
         }
         binding.gemsCategoryRV.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.gemsCategoryRV.adapter = categoriesAdapter
     }
 
+
     private fun navigateToAllGems(selectedCategory: String) {
-        val fragment = AllGemsFragment().apply {
-            arguments = Bundle().apply {
-                putString("selectedCategory", selectedCategory)
+        firestore.collection("lists").document("names").collection("items")
+            .whereEqualTo("value", selectedCategory)
+            .get()
+            .addOnSuccessListener { documents ->
+                val listItem = if (documents.isEmpty) null else documents.documents[0].toObject(ListItem::class.java)
+
+                val fragment = AllGemsFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("selectedCategory", selectedCategory)
+                        putSerializable("selectedCategoryDescription", listItem)
+                    }
+                }
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frame_container, fragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
             }
-        }
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
     }
+
 }

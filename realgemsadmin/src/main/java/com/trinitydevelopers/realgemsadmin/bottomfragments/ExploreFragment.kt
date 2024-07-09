@@ -27,12 +27,13 @@ import com.trinitydevelopers.realgemsadmin.fragments.AllGemsFragment
 import com.trinitydevelopers.realgemsadmin.fragments.GemsCategoryFragment
 import com.trinitydevelopers.realgemsadmin.fragments.GemsDetailFragment
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
+import com.trinitydevelopers.realgemsadmin.pojos.ListItem
 
 class ExploreFragment : Fragment() {
     private lateinit var binding: FragmentExploreBinding
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var productAdapter: ProductAdapter
+    private lateinit var productAdapter: PinProductAdapter
 
     private var gemsList = mutableListOf<Gems>()
 
@@ -158,19 +159,32 @@ class ExploreFragment : Fragment() {
     }
 
     private fun navigateToAllGems(selectedCategory: String) {
-        val fragment = AllGemsFragment().apply {
-            arguments = Bundle().apply {
-                putString("selectedCategory", selectedCategory)
+        firestore.collection("lists").document("names").collection("items")
+            .whereEqualTo("value", selectedCategory)
+            .get()
+            .addOnSuccessListener { documents ->
+                val listItem = if (documents.isEmpty) null else documents.documents[0].toObject(
+                    ListItem::class.java)
+
+                val fragment = AllGemsFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("selectedCategory", selectedCategory)
+                        putSerializable("selectedCategoryDescription", listItem)
+                    }
+                }
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frame_container, fragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
             }
-        }
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+            .addOnFailureListener { exception ->
+                Log.w("ExploreFragment", "Error getting documents: ", exception)
+            }
     }
 
+
     private fun setupPinnedProductRecyclerView() {
-        productAdapter = ProductAdapter(requireContext(), listOf()) { selectedGem ->
+        productAdapter = PinProductAdapter(requireContext(), listOf()) { selectedGem ->
             navigateToGemsDetail(selectedGem)
         }
         binding.pinnedProductRV.layoutManager =

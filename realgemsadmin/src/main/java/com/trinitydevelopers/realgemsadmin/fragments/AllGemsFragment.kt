@@ -12,6 +12,7 @@ import com.trinitydevelopers.realgemsadmin.R
 import com.trinitydevelopers.realgemsadmin.adapter.ProductAdapter
 import com.trinitydevelopers.realgemsadmin.databinding.FragmentAllGemsBinding
 import com.trinitydevelopers.realgemsadmin.pojos.Gems
+import com.trinitydevelopers.realgemsadmin.pojos.ListItem
 
 
 class AllGemsFragment : Fragment() {
@@ -20,6 +21,8 @@ class AllGemsFragment : Fragment() {
     private lateinit var productAdapter: ProductAdapter
     private var gemsList = mutableListOf<Gems>()
     private var selectedCategory: String? = null
+    private var selectedCategoryDescription: ListItem? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +38,13 @@ class AllGemsFragment : Fragment() {
         firestore = FirebaseFirestore.getInstance()
 
         selectedCategory = arguments?.getString("selectedCategory")
+        selectedCategoryDescription = arguments?.getSerializable("selectedCategoryDescription") as? ListItem
+
 
         setupRecyclerView()
         fetchGemsData()
+        displayCategoryDetails()
+
     }
 
     private fun fetchGemsData() {
@@ -63,9 +70,12 @@ class AllGemsFragment : Fragment() {
         }
     }
 
+
     private fun updateRecyclerView() {
         productAdapter.notifyDataSetChanged()
     }
+
+
 
     private fun setupRecyclerView() {
         productAdapter = ProductAdapter(requireContext(), gemsList) { gem ->
@@ -87,5 +97,12 @@ class AllGemsFragment : Fragment() {
             .replace(R.id.frame_container, detailFragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun displayCategoryDetails() {
+        selectedCategoryDescription?.let { description ->
+            binding.tvAllGemsValue.text = description.value
+            binding.tvAllGemsName.text = description.description
+        }
     }
 }
