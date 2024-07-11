@@ -77,7 +77,7 @@
                     android:layout_marginEnd="16dp"
                     android:backgroundTint="@color/light_white_color"
                     android:padding="12dp"
-                    android:text="Gemstones\n\n Explore the collections of natural and lab-certified gemstones. From precious to semi-precious, our gemstone collection brings balance and positivity. Find the perfect gemstone to enhance your astrological well-being and elevate your spiritual journey."
+                    android:text="Gemstones\n\nExplore the collections of natural and lab-certified gemstones. From precious to semi-precious, our gemstone collection brings balance and positivity. Find the perfect gemstone to enhance your astrological well-being and elevate your spiritual journey."
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"

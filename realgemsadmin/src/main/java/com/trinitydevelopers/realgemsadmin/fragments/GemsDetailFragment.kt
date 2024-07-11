@@ -63,30 +63,6 @@ class GemsDetailFragment : Fragment() {
             togglePinStatus()
         }
 
-//        selectedGem.let { gem ->
-//            // Populate UI with gem details
-//            binding.gemsDetailName.text = gem.nameId
-//            binding.gemsDetailCarats.text = gem.carats.toString()
-//            binding.gemsDetailComposition.text = gem.compositionId
-//            binding.gemsDetailCut.text = gem.cutId
-//            binding.gemsDetailOrigin.text = gem.origin
-//            binding.gemsDetailShape.text = gem.shapeId
-//            binding.gemsDetailTreatment.text = gem.treatmentId
-//            binding.gemsDetailColor.text = gem.color
-//
-//            // Set initial pin/unpin icon
-//            if (gem.isPinned) {
-//                binding.gemsDetailPinUnpin.setImageResource(R.drawable.pinned_icon)
-//            } else {
-//                binding.gemsDetailPinUnpin.setImageResource(R.drawable.unpinned_icon)
-//            }
-//            // Load images into ViewPager2
-//            val viewPager = binding.viewPager
-//            val imageUrls = gem.imageUrls
-//            viewPager.adapter = ImagePagerAdapter(imageUrls)
-//        }
-
-
     }
 
     private fun populateGemDetails(gem: Gems) {
@@ -98,6 +74,7 @@ class GemsDetailFragment : Fragment() {
         binding.gemsDetailShape.text = gem.shapeId
         binding.gemsDetailTreatment.text = gem.treatmentId
         binding.gemsDetailColor.text = gem.color
+        binding.textView21.text="${gem.compositionId} and certificate ${gem.nameId} dd${gem.carats} Carats in ${gem.shapeId} shape and ${gem.color} color."
 
         // Load images into ViewPager2
         val viewPager = binding.viewPager

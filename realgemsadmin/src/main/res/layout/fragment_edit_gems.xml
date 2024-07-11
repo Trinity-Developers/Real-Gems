@@ -6,202 +6,253 @@
     android:layout_height="match_parent"
     tools:context=".fragments.EditGemsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Edit Gem"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name" />
-
-            <Spinner
-                android:id="@+id/spinnerEditName"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_height="match_parent"
+                android:background="@color/Soft_White">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Cut" />
 
-            <Spinner
-                android:id="@+id/spinnerEditCut"
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="4dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Shape" />
 
-            <Spinner
-                android:id="@+id/spinnerEditShape"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Composition" />
-
-            <Spinner
-                android:id="@+id/spinnerEditComposition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Treatment" />
-
-            <Spinner
-                android:id="@+id/spinnerEditTreatment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <EditText
-                android:id="@+id/edtEditGemOrigin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Origin" />
-
-            <EditText
-                android:id="@+id/edtEditGemColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Color" />
-
-            <EditText
-                android:id="@+id/edtEditGemCarats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Carats"
-                android:inputType="numberDecimal" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnEditGem1"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/editName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Button" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/spinner_design"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
-                <Button
-                    android:id="@+id/btnEditGem2"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Button" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/back_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btnEditGem3"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Button" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/lato_black"
+                    android:text="Edit Gems"
+                    android:textSize="25sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.046"
+                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                    app:layout_constraintTop_toTopOf="@+id/imageView9"
+                    app:layout_constraintVertical_bias="1.0" />
 
-                <Button
-                    android:id="@+id/btnEditGem4"
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/editCut"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Button" />
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/spinner_design"
+                    android:padding="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/editShape"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editShape"
+                    app:layout_constraintTop_toTopOf="@+id/editShape" />
 
-            </LinearLayout>
+                <Spinner
+                    android:id="@+id/editShape"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/spinner_design"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toStartOf="@+id/editCut"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editName" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                <Spinner
+                    android:id="@+id/editComposition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/spinner_design"
+                    android:padding="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/editTreatment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editTreatment"
+                    app:layout_constraintTop_toTopOf="@+id/editTreatment" />
+
+                <Spinner
+                    android:id="@+id/editTreatment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/spinner_design"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toStartOf="@+id/editComposition"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editShape" />
+
+                <EditText
+                    android:id="@+id/editTextOrigin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/edit_text_shape_design"
+                    android:drawableLeft="@drawable/origin_icon"
+                    android:drawablePadding="8dp"
+                    android:hint="Origin"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editTreatment" />
+
+                <EditText
+                    android:id="@+id/editTextColor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/edit_text_shape_design"
+                    android:drawableLeft="@drawable/color_icon"
+                    android:drawablePadding="8dp"
+                    android:hint="Color"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/editTextCarats"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editTextOrigin" />
+
+                <EditText
+                    android:id="@+id/editTextCarats"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/edit_text_shape_design"
+                    android:drawableLeft="@drawable/carats_icon"
+                    android:drawablePadding="8dp"
+                    android:hint="Carats"
+                    android:inputType="numberDecimal"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/editTextColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editTextColor"
+                    app:layout_constraintTop_toTopOf="@+id/editTextColor" />
 
                 <ImageView
                     android:id="@+id/EditGemImage1"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/gems_splash" />
+                    android:layout_width="140dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/add_image_shape"
+                    android:elevation="4dp"
+                    android:src="@drawable/firoza"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editTextColor" />
 
                 <ImageView
-                    android:id="@+id/EditGemImage2"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/gems_splash" />
+                    android:id="@+id/imageView2"
+                    android:layout_width="140dp"
+                    android:layout_height="110dp"
+                    android:background="@drawable/add_image_shape"
+                    android:elevation="4dp"
+                    android:src="@drawable/firoza"
+                    app:layout_constraintBottom_toBottomOf="@+id/EditGemImage1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/EditGemImage1"
+                    app:layout_constraintTop_toTopOf="@+id/EditGemImage1" />
 
                 <ImageView
-                    android:id="@+id/EditGemImage3"
-                    android:layout_width="0dp"
+                    android:id="@+id/imageView3"
+                    android:layout_width="140dp"
                     android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/gems_splash" />
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/add_image_shape"
+                    android:elevation="4dp"
+                    android:src="@drawable/firoza"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/EditGemImage1" />
 
                 <ImageView
-                    android:id="@+id/EditGemImage4"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/gems_splash" />
-            </LinearLayout>
+                    android:id="@+id/imageView4"
+                    android:layout_width="140dp"
+                    android:layout_height="110dp"
+                    android:background="@drawable/add_image_shape"
+                    android:elevation="4dp"
+                    android:src="@drawable/firoza"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnEditGems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bottom_nav_gradient"
+                    android:fontFamily="@font/lato_black"
+                    android:text="Update Gem"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-            <Button
-                android:layout_marginTop="15dp"
-                android:id="@+id/buttonEditGemSave"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="20dp"
-                android:layout_height="wrap_content"
-                android:text="Save Update" />
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </FrameLayout>

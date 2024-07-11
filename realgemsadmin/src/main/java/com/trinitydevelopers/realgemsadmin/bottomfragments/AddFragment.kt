@@ -46,20 +46,31 @@ class AddFragment : Fragment() {
         binding.imageView3.setOnClickListener { pickImageForImageView(2) }
         binding.imageView4.setOnClickListener { pickImageForImageView(3) }
 
-
-
         binding.buttonAddGem.setOnClickListener {
-
             if (binding.editTextOrigin.text.isEmpty()
-                && binding.editTextColor.text.isEmpty()&&binding.editTextCarats.text.isEmpty()){
+                || binding.editTextColor.text.isEmpty()
+                || binding.editTextCarats.text.isEmpty()) {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
-            }else {
+            } else {
                 binding.progressBar.visibility = View.VISIBLE
                 binding.buttonAddGem.isEnabled = false // Disable the add button
+                binding.spinnerName.isEnabled=false
+                binding.spinnerCut.isEnabled=false
+                binding.spinnerShape.isEnabled=false
+                binding.spinnerTreatment.isEnabled=false
+                binding.spinnerComposition.isEnabled=false
+                binding.editTextColor.isEnabled=false
+                binding.editTextCarats.isEnabled=false
+                binding.editTextOrigin.isEnabled=false
+                binding.imageView1.isEnabled=false
+                binding.imageView2.isEnabled=false
+                binding.imageView3.isEnabled=false
+                binding.imageView4.isEnabled=false
                 addGem()
             }
         }
     }
+
     private fun setupSpinners() {
         setupSpinner(binding.spinnerName, "names")
         setupSpinner(binding.spinnerCut, "cuts")
@@ -95,26 +106,37 @@ class AddFragment : Fragment() {
     }
 
 
+    private var imageCount = 0
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode in 0..3) {
             val uri = data?.data
             if (uri != null) {
-                if (selectedImages.size > requestCode) {
-                    selectedImages[requestCode] = uri
+                // Check if this image is already selected
+                if (!selectedImages.contains(uri)) {
+                    // Add the image to the list if not already selected
+                    if (imageCount < 4) {
+                        selectedImages.add(uri)
+                        imageCount++
+                        updateImageView(selectedImages.indexOf(uri), uri)
+                    } else {
+                        Toast.makeText(context, "You have already selected 4 images", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    selectedImages.add(requestCode, uri)
+                    Toast.makeText(context, "This image is already selected", Toast.LENGTH_SHORT).show()
                 }
-                updateImageView(requestCode, uri)
             }
         }
     }
+
+
     private fun updateImageView(index: Int, uri: Uri) {
         when (index) {
-            0 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.gems_splash).into(binding.imageView1)
-            1 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView2)
-            2 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView3)
-            3 -> Picasso.get().load(uri).placeholder(R.drawable.gems_splash).error(R.drawable.gems_splash).into(binding.imageView4)
+            0 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.firoza).into(binding.imageView1)
+            1 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.firoza).into(binding.imageView2)
+            2 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.firoza).into(binding.imageView3)
+            3 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.firoza).into(binding.imageView4)
         }
     }
 
@@ -123,7 +145,7 @@ class AddFragment : Fragment() {
 
         imageViews.forEach { imageView ->
             Picasso.get()
-                .load(R.drawable.gems_splash)
+                .load(R.drawable.firoza)
                 .into(imageView)
         }
 
@@ -131,18 +153,30 @@ class AddFragment : Fragment() {
             if (index < imageViews.size) {
                 Picasso.get()
                     .load(uri)
-                    .placeholder(R.drawable.gems_splash)
-                    .error(R.drawable.gems_splash)
+                    .placeholder(R.drawable.firoza)
+                    .error(R.drawable.firoza)
                     .into(imageViews[index])
             }
         }
     }
 
-
     private fun addGem() {
         if (selectedImages.size != 4) {
             binding.progressBar.visibility = View.GONE
+
             binding.buttonAddGem.isEnabled = true // Re-enable the add button
+            binding.spinnerName.isEnabled=true
+            binding.spinnerCut.isEnabled=true
+            binding.spinnerShape.isEnabled=true
+            binding.spinnerTreatment.isEnabled=true
+            binding.spinnerComposition.isEnabled=true
+            binding.editTextColor.isEnabled=true
+            binding.editTextCarats.isEnabled=true
+            binding.editTextOrigin.isEnabled=true
+            binding.imageView1.isEnabled=true
+            binding.imageView2.isEnabled=true
+            binding.imageView3.isEnabled=true
+            binding.imageView4.isEnabled=true
             Toast.makeText(context, "Please select exactly 4 images", Toast.LENGTH_SHORT).show()
             return
         }
@@ -164,13 +198,9 @@ class AddFragment : Fragment() {
         gemRef.set(gemsData)
             .addOnSuccessListener {
                 uploadImages(gemRef.id)
-                Toast.makeText(context, "Gem added successfully", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                binding.progressBar.visibility = View.GONE
-                binding.buttonAddGem.isEnabled = true // Re-enable the add button
-                Log.w("AddFragment", "Error adding document", e)
-                Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
+                handleAddGemFailure(e)
             }
     }
 
@@ -185,31 +215,56 @@ class AddFragment : Fragment() {
                     ref.downloadUrl.addOnSuccessListener { downloadUri ->
                         imageUrls.add(downloadUri.toString())
                         if (imageUrls.size == selectedImages.size) {
-                            firestore.collection("gems").document(gemId)
-                                .update("imageUrls", imageUrls)
-                                .addOnSuccessListener {
-                                    binding.progressBar.visibility = View.GONE
-                                    binding.buttonAddGem.isEnabled = true // Re-enable the add button
-                                    Toast.makeText(context, "Gem added successfully", Toast.LENGTH_SHORT).show()
-                                    clearFields()
-                                }
-                                .addOnFailureListener { e ->
-                                    binding.progressBar.visibility = View.GONE
-                                    binding.buttonAddGem.isEnabled = true // Re-enable the add button
-                                    Log.w("AddFragment", "Error updating document", e)
-                                    Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
-                                }
+                            updateGemWithImageUrls(gemId, imageUrls)
                         }
                     }
                 }
                 .addOnFailureListener { e ->
-                    binding.progressBar.visibility = View.GONE
-                    binding.buttonAddGem.isEnabled = true // Re-enable the add button
-                    Log.w("AddFragment", "Error uploading image", e)
-                    Toast.makeText(context, "Error uploading images", Toast.LENGTH_SHORT).show()
+                    handleUploadImageFailure(e)
                 }
         }
     }
+
+    private fun updateGemWithImageUrls(gemId: String, imageUrls: List<String>) {
+        firestore.collection("gems").document(gemId)
+            .update("imageUrls", imageUrls)
+            .addOnSuccessListener {
+                handleAddGemSuccess()
+            }
+            .addOnFailureListener { e ->
+                handleUpdateGemFailure(e)
+            }
+    }
+
+    private fun handleAddGemFailure(e: Exception) {
+        binding.progressBar.visibility = View.GONE
+        binding.buttonAddGem.isEnabled = true // Re-enable the add button
+
+        Log.w("AddFragment", "Error adding document", e)
+        Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleUploadImageFailure(e: Exception) {
+        binding.progressBar.visibility = View.GONE
+        binding.buttonAddGem.isEnabled = true // Re-enable the add button
+        Log.w("AddFragment", "Error uploading image", e)
+        Toast.makeText(context, "Error uploading images", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleUpdateGemFailure(e: Exception) {
+        binding.progressBar.visibility = View.GONE
+        binding.buttonAddGem.isEnabled = true // Re-enable the add button
+        Log.w("AddFragment", "Error updating document", e)
+        Toast.makeText(context, "Error adding gem", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleAddGemSuccess() {
+        binding.progressBar.visibility = View.GONE
+        binding.buttonAddGem.isEnabled = true // Re-enable the add button
+        Toast.makeText(context, "Gem added successfully", Toast.LENGTH_SHORT).show()
+        clearFields()
+    }
+
 
     private fun clearFields() {
         binding.editTextOrigin.text.clear()
@@ -223,5 +278,4 @@ class AddFragment : Fragment() {
         selectedImages.clear()
         updateImageViews()
     }
-
 }

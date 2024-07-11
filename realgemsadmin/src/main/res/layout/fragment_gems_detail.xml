@@ -6,337 +6,392 @@
     android:layout_height="match_parent"
     tools:context=".fragments.GemsDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/gemsDetailDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:src="@drawable/baseline_delete_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailPinUnpin" />
-
-        <TextView
-            android:id="@+id/gemsDetailName"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="32dp"
-            android:padding="8dp"
-            android:text="Name"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.947"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+            android:orientation="vertical">
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailCut"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailName" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
 
-        <TextView
-            android:id="@+id/gemsDetailCut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:padding="8dp"
-            android:text="Cut"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@+id/view2"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailName"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailName" />
+                <ImageView
+                    android:id="@+id/gemsDetailDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:src="@drawable/baseline_delete_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailShape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailCut"
-            app:layout_constraintVertical_bias="1.0" />
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
+                    android:layout_width="250dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailPinUnpin" />
 
-        <TextView
-            android:id="@+id/gemsDetailShape"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:text="Shape"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailCut"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailCut" />
+                <TextView
+                    android:id="@+id/gemsDetailName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="32dp"
+                    android:padding="8dp"
+                    android:text="Name"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.951"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailComposition"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailShape" />
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailCut"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailName" />
 
-        <TextView
-            android:id="@+id/gemsDetailComposition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="Composition"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailShape"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailShape" />
+                <TextView
+                    android:id="@+id/gemsDetailCut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="8dp"
+                    android:text="Cut"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toTopOf="@+id/view2"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailName"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailName" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailShape"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailCut"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <TextView
+                    android:id="@+id/gemsDetailShape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="Shape"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailCut"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailCut" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailComposition"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailShape" />
+
+                <TextView
+                    android:id="@+id/gemsDetailComposition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="Composition"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailShape"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailShape" />
 
 
-        <View
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailTreatment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailComposition" />
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailTreatment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailComposition" />
 
-        <TextView
-            android:id="@+id/gemsDetailTreatment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="Treatment"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailComposition"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailComposition" />
+                <TextView
+                    android:id="@+id/gemsDetailTreatment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="Treatment"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailComposition"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailComposition" />
 
-        <View
-            android:id="@+id/view5"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailOrigin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailTreatment" />
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailOrigin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailTreatment" />
 
-        <TextView
-            android:id="@+id/gemsDetailOrigin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="Origin"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailTreatment"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailTreatment" />
+                <TextView
+                    android:id="@+id/gemsDetailOrigin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="Origin"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailTreatment"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailTreatment" />
 
-        <View
-            android:id="@+id/view6"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailOrigin" />
+                <View
+                    android:id="@+id/view6"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailOrigin" />
 
-        <TextView
-            android:id="@+id/gemsDetailColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="Colour"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailOrigin"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailOrigin" />
+                <TextView
+                    android:id="@+id/gemsDetailColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="Colour"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailOrigin"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailOrigin" />
 
-        <View
-            android:id="@+id/view7"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/gemsDetailCarats"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailColor" />
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/gemsDetailCarats"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailColor" />
 
-        <TextView
-            android:id="@+id/gemsDetailCarats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="Carats"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/gemsDetailColor"
-            app:layout_constraintTop_toBottomOf="@+id/gemsDetailColor" />
+                <TextView
+                    android:id="@+id/gemsDetailCarats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="8dp"
+                    android:text="Carats"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@+id/gemsDetailColor"
+                    app:layout_constraintTop_toBottomOf="@+id/gemsDetailColor" />
 
-        <ImageView
-            android:id="@+id/gemsDetailEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:src="@drawable/edit_icons"
-            app:layout_constraintEnd_toStartOf="@+id/gemsDetailDelete"
-            app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/gemsDetailEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/edit_icons"
+                    app:layout_constraintEnd_toStartOf="@+id/gemsDetailDelete"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/gemsDetailPinUnpin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:src="@drawable/unpinned_icon"
-            app:layout_constraintEnd_toStartOf="@+id/gemsDetailEdit"
-            app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/gemsDetailPinUnpin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:src="@drawable/unpinned_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/gemsDetailEdit"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:padding="8dp"
-            android:text="Name"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailName"
-            app:layout_constraintVertical_bias="1.0" />
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:padding="8dp"
+                    android:text="Name"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailName"
+                    app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:padding="8dp"
-            android:text="Cut"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailCut"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailCut" />
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="8dp"
+                    android:text="Cut"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailCut"
+                    app:layout_constraintStart_toStartOf="@+id/textView8"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailCut" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Shape"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailShape"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailShape" />
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Shape"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailShape"
+                    app:layout_constraintStart_toStartOf="@+id/textView9"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailShape" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Origin"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailOrigin"
-            app:layout_constraintStart_toStartOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailOrigin" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Origin"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailOrigin"
+                    app:layout_constraintStart_toStartOf="@+id/textView13"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailOrigin" />
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Composition"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailComposition"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailComposition" />
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Composition"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailComposition"
+                    app:layout_constraintStart_toStartOf="@+id/textView10"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailComposition" />
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Treatment"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailTreatment"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailTreatment" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Treatment"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailTreatment"
+                    app:layout_constraintStart_toStartOf="@+id/textView12"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailTreatment" />
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Colour"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailColor"
-            app:layout_constraintStart_toStartOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailColor" />
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Colour"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailColor"
+                    app:layout_constraintStart_toStartOf="@+id/textView11"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailColor" />
 
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Carats"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/gemsDetailCarats"
-            app:layout_constraintStart_toStartOf="@+id/textView14"
-            app:layout_constraintTop_toTopOf="@+id/gemsDetailCarats" />
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Carats"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/gemsDetailCarats"
+                    app:layout_constraintStart_toStartOf="@+id/textView14"
+                    app:layout_constraintTop_toTopOf="@+id/gemsDetailCarats" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:padding="8dp"
+                    android:text="Product Specification"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/viewPager"
+                    app:layout_constraintStart_toStartOf="@+id/viewPager"
+                    app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+
+                <View
+                    android:id="@+id/view8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="100dp"
+                    android:background="@color/red"
+                    app:layout_constraintEnd_toEndOf="@+id/textView18"
+                    app:layout_constraintHorizontal_bias="0.501"
+                    app:layout_constraintStart_toStartOf="@+id/textView18"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="Nature and certified Yellow Sapphire ( Pukhraj ) weighing 2.26 carats in Ovel shape and yellow colour"
+                    android:textColor="@color/red"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view8" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </FrameLayout>

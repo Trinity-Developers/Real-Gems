@@ -23,9 +23,11 @@ import com.trinitydevelopers.realgemsadmin.pojos.Gems
 
 
 class EditGemsFragment : Fragment() {
-private lateinit var binding:FragmentEditGemsBinding
+
+    private lateinit var binding:FragmentEditGemsBinding
     private var selectedGem: Gems? = null
     private val firestore = FirebaseFirestore.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -42,21 +44,22 @@ private lateinit var binding:FragmentEditGemsBinding
             selectedGem = it.getSerializable("selectedGem") as? Gems
         }
 
+
         // Setup spinners and populate with data
         setupSpinners()
 
         // Populate EditText fields with selected gem data if available
         selectedGem?.let { gem ->
-            binding.edtEditGemOrigin.setText(gem.origin)
-            binding.edtEditGemColor.setText(gem.color)
-            binding.edtEditGemCarats.setText(gem.carats.toString())
+            binding.editTextOrigin.setText(gem.origin)
+            binding.editTextColor.setText(gem.color)
+            binding.editTextCarats.setText(gem.carats.toString())
 
             // Load images into image views using Picasso
             val imageViews = listOf(
                 binding.EditGemImage1,
-                binding.EditGemImage2,
-                binding.EditGemImage3,
-                binding.EditGemImage4
+                binding.imageView2,
+                binding.imageView3,
+                binding.imageView4
             )
             gem.imageUrls.forEachIndexed { index, imageUrl ->
                 if (index < imageViews.size) {
@@ -65,33 +68,36 @@ private lateinit var binding:FragmentEditGemsBinding
             }
         }
 
-        // Setup click listeners for image pick buttons
-        binding.btnEditGem1.setOnClickListener { pickImageForImageView(0) }
-        binding.btnEditGem2.setOnClickListener { pickImageForImageView(1) }
-        binding.btnEditGem3.setOnClickListener { pickImageForImageView(2) }
-        binding.btnEditGem4.setOnClickListener { pickImageForImageView(3) }
+        // Setup click listeners for image views
+        binding.EditGemImage1.setOnClickListener { pickImageForImageView(0) }
+        binding.imageView2.setOnClickListener { pickImageForImageView(1) }
+        binding.imageView3.setOnClickListener { pickImageForImageView(2) }
+        binding.imageView4.setOnClickListener { pickImageForImageView(3) }
 
         // Setup save button click listener
-        binding.buttonEditGemSave.setOnClickListener {
-            updateGemData(selectedGem!!)
+        binding.btnEditGems.setOnClickListener {
+            selectedGem?.let {
+                updateGemData(it)
+            }
         }
+
     }
 
 
     private fun setupSpinners() {
-        setupSpinner(binding.spinnerEditName, "names",selectedGem?.nameId)
-        setupSpinner(binding.spinnerEditCut, "cuts",selectedGem?.cutId)
-        setupSpinner(binding.spinnerEditShape, "shapes",selectedGem?.shapeId)
-        setupSpinner(binding.spinnerEditComposition, "compositions",selectedGem?.compositionId)
-        setupSpinner(binding.spinnerEditTreatment, "treatments",selectedGem?.treatmentId)
+        setupSpinner(binding.editName, "names",selectedGem?.nameId)
+        setupSpinner(binding.editCut, "cuts",selectedGem?.cutId)
+        setupSpinner(binding.editShape, "shapes",selectedGem?.shapeId)
+        setupSpinner(binding.editComposition, "compositions",selectedGem?.compositionId)
+        setupSpinner(binding.editTreatment, "treatments",selectedGem?.treatmentId)
 
         // Pre-select existing data if available
         selectedGem?.let { gem ->
-            binding.spinnerEditName.setSelection(getSpinnerIndex(binding.spinnerEditName, gem.nameId))
-            binding.spinnerEditComposition.setSelection(getSpinnerIndex(binding.spinnerEditCut, gem.cutId))
-            binding.spinnerEditShape.setSelection(getSpinnerIndex(binding.spinnerEditShape, gem.shapeId))
-            binding.spinnerEditComposition.setSelection(getSpinnerIndex(binding.spinnerEditComposition, gem.compositionId))
-            binding.spinnerEditTreatment.setSelection(getSpinnerIndex(binding.spinnerEditTreatment, gem.treatmentId))
+            binding.editName.setSelection(getSpinnerIndex(binding.editName, gem.nameId))
+            binding.editComposition.setSelection(getSpinnerIndex(binding.editCut, gem.cutId))
+            binding.editShape.setSelection(getSpinnerIndex(binding.editShape, gem.shapeId))
+            binding.editComposition.setSelection(getSpinnerIndex(binding.editComposition, gem.compositionId))
+            binding.editTreatment.setSelection(getSpinnerIndex(binding.editTreatment, gem.treatmentId))
         }
     }
 
@@ -152,25 +158,24 @@ private lateinit var binding:FragmentEditGemsBinding
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), index)
     }
 
-
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (resultCode == Activity.RESULT_OK && data != null) {
-        val selectedImageUri = data.data
-        if (selectedImageUri != null) {
-            updateImageView(requestCode, selectedImageUri)
-            // Update Firestore document and Firebase Storage with the new image URL
-            uploadImageToFirebaseStorage(requestCode, selectedImageUri)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImageUri = data.data
+            if (selectedImageUri != null) {
+                updateImageView(requestCode, selectedImageUri)
+                // Update Firestore document and Firebase Storage with the new image URL
+                uploadImageToFirebaseStorage(requestCode, selectedImageUri)
+            }
         }
     }
-}
 
     private fun updateImageView(index: Int, uri: Uri) {
         when (index) {
             0 -> Picasso.get().load(uri).into(binding.EditGemImage1)
-            1 -> Picasso.get().load(uri).into(binding.EditGemImage2)
-            2 -> Picasso.get().load(uri).into(binding.EditGemImage3)
-            3 -> Picasso.get().load(uri).into(binding.EditGemImage4)
+            1 -> Picasso.get().load(uri).into(binding.imageView2)
+            2 -> Picasso.get().load(uri).into(binding.imageView3)
+            3 -> Picasso.get().load(uri).into(binding.imageView4)
         }
     }
 
@@ -208,43 +213,47 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     }
 
     private fun updateFirestoreWithNewImageUrls() {
-        if (isAdded){
-
-        val firestore = FirebaseFirestore.getInstance()
-        selectedGem?.let { gem ->
-            firestore.collection("gems").document(gem.gemId!!)
-                .update("imageUrls", gem.imageUrls)
-                .addOnSuccessListener {
-                    Log.d("EditGemsFragment", "Image URLs successfully updated!")
-                    Toast.makeText(requireContext(), "Image updated successfully", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Log.e("EditGemsFragment", "Error updating image URLs", e)
-                    Toast.makeText(requireContext(), "Failed to update image URLs: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+        if (isAdded) {
+            val firestore = FirebaseFirestore.getInstance()
+            selectedGem?.let { gem ->
+                firestore.collection("gems").document(gem.gemId!!)
+                    .update("imageUrls", gem.imageUrls)
+                    .addOnSuccessListener {
+                        Log.d("EditGemsFragment", "Image URLs successfully updated!")
+                        Toast.makeText(
+                            requireContext(),
+                            "Image updated successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("EditGemsFragment", "Error updating image URLs", e)
+                        Toast.makeText(
+                            requireContext(),
+                            "Failed to update image URLs: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
         }
-        }
-
     }
 
     private fun updateGemData(updatedGem: Gems) {
-
         updatedGem.apply {
-            nameId = binding.spinnerEditName.selectedItem.toString()
-            cutId = binding.spinnerEditCut.selectedItem.toString()
-            shapeId = binding.spinnerEditShape.selectedItem.toString()
-            compositionId = binding.spinnerEditComposition.selectedItem.toString()
-            treatmentId = binding.spinnerEditTreatment.selectedItem.toString()
-            origin = binding.edtEditGemOrigin.text.toString()
-            color = binding.edtEditGemColor.text.toString()
-            carats = binding.edtEditGemCarats.text.toString().toDoubleOrNull() ?: 0.0
+            nameId = binding.editName.selectedItem.toString()
+            cutId = binding.editCut.selectedItem.toString()
+            shapeId = binding.editShape.selectedItem.toString()
+            compositionId = binding.editComposition.selectedItem.toString()
+            treatmentId = binding.editTreatment.selectedItem.toString()
+            origin = binding.editTextOrigin.text.toString()
+            color = binding.editTextColor.text.toString()
+            carats = binding.editTextCarats.text.toString().toDoubleOrNull() ?: 0.0
             // Update other fields as needed
         }
 
         // Call function to update data in Firestore
         updateFirestore(updatedGem)
     }
-
     private fun updateFirestore(updatedGem: Gems) {
         val firestore = FirebaseFirestore.getInstance()
         // Log updatedGem to ensure all fields are populated correctly
@@ -256,7 +265,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
                 // Document successfully updated
                 Log.d("EditGemsFragment", "Document successfully updated!")
                 Toast.makeText(requireContext(), "Gem updated successfully", Toast.LENGTH_SHORT).show()
-                activity?.onBackPressed() // Example: Go back to previous fragment
+                activity?.onBackPressed() // Example: Go  back to previous fragment
             }
             .addOnFailureListener { e ->
                 // Handle failure
@@ -264,5 +273,4 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
                 Toast.makeText(requireContext(), "Failed to update gem: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
 }

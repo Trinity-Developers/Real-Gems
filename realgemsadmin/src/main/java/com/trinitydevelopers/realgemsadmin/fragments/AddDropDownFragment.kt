@@ -41,8 +41,8 @@ class AddDropDownFragment : Fragment() {
     }
     private fun addItemToCollection() {
         val selectedType = binding.spinnerType.selectedItem.toString()
-        val value = binding.editTextValue.text.toString()
-        val description = binding.editTextDescription.text.toString()
+        val value = binding.editTextValue.text.toString().trim()
+        val description = binding.editTextDescription.text.toString().trim()
 
         if (value.isEmpty()) {
             Toast.makeText(context, "Value cannot be empty", Toast.LENGTH_SHORT).show()
