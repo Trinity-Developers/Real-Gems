@@ -2,10 +2,14 @@ package com.trinitydevelopers.realgemsadmin.bottomfragments
 
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.squareup.picasso.Picasso
@@ -32,6 +36,31 @@ private lateinit var binding:FragmentProfileBinding
         super.onViewCreated(view, savedInstanceState)
 
         firestore = FirebaseFirestore.getInstance()
+
+        val text = "Real Gems"
+        val spannableString = SpannableString(text)
+
+        // Set color for "Constitution"
+        val saffronColor = ContextCompat.getColor(requireContext(), R.color.red)
+        spannableString.setSpan(
+            ForegroundColorSpan(saffronColor),
+            0,
+            4,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Set color for "O F"
+        val blueColor = ContextCompat.getColor(requireContext(), R.color.purple)
+        spannableString.setSpan(
+            ForegroundColorSpan(blueColor),
+            5,
+            8,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Set the SpannableString to a TextView
+        binding.textView27.text = spannableString
+
 
         // Assuming you have a user ID or use authentication to retrieve the current user's profile
         val userId = "currentUserId" // Replace with your logic to get the current user ID

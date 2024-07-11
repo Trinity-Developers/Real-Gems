@@ -84,7 +84,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edtEditProfileContact" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:background="@drawable/edit_profile_btn"
+            android:background="@drawable/bottom_nav_gradient"
             android:id="@+id/btnEditProfileSave"
             android:elevation="12dp"
             android:layout_width="0dp"
