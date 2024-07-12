@@ -259,6 +259,7 @@
                     android:text="Name"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="#0B0A0A"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailName"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/gemsDetailName"
@@ -274,6 +275,7 @@
                     android:text="Cut"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="#0B0A0A"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailCut"
                     app:layout_constraintStart_toStartOf="@+id/textView8"
                     app:layout_constraintTop_toTopOf="@+id/gemsDetailCut" />
@@ -284,6 +286,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="Shape"
+                    android:textColor="#0B0A0A"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailShape"
@@ -297,6 +300,7 @@
                     android:padding="8dp"
                     android:text="Origin"
                     android:textSize="15sp"
+                    android:textColor="#0B0A0A"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailOrigin"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
@@ -310,6 +314,7 @@
                     android:text="Composition"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="#0B0A0A"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailComposition"
                     app:layout_constraintStart_toStartOf="@+id/textView10"
                     app:layout_constraintTop_toTopOf="@+id/gemsDetailComposition" />
@@ -322,6 +327,7 @@
                     android:text="Treatment"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="#0B0A0A"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailTreatment"
                     app:layout_constraintStart_toStartOf="@+id/textView12"
                     app:layout_constraintTop_toTopOf="@+id/gemsDetailTreatment" />
@@ -334,6 +340,7 @@
                     android:text="Colour"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="#0B0A0A"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailColor"
                     app:layout_constraintStart_toStartOf="@+id/textView11"
                     app:layout_constraintTop_toTopOf="@+id/gemsDetailColor" />
@@ -346,6 +353,7 @@
                     android:text="Carats"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="#0B0A0A"
                     app:layout_constraintBottom_toBottomOf="@+id/gemsDetailCarats"
                     app:layout_constraintStart_toStartOf="@+id/textView14"
                     app:layout_constraintTop_toTopOf="@+id/gemsDetailCarats" />
