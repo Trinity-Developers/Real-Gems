@@ -50,9 +50,8 @@
                     android:layout_marginEnd="32dp"
                     android:padding="8dp"
                     android:text="Name"
-                    android:textColor="@color/black"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
-                    android:textStyle=""
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.951"
                     app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +78,7 @@
                     android:layout_marginBottom="8dp"
                     android:padding="8dp"
                     android:text="Cut"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toTopOf="@+id/view2"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailName"
@@ -105,6 +105,7 @@
                     android:layout_marginTop="8dp"
                     android:padding="8dp"
                     android:text="Shape"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailCut"
                     app:layout_constraintTop_toBottomOf="@+id/gemsDetailCut" />
@@ -129,6 +130,7 @@
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     android:text="Composition"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailShape"
                     app:layout_constraintTop_toBottomOf="@+id/gemsDetailShape" />
@@ -154,6 +156,7 @@
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     android:text="Treatment"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailComposition"
                     app:layout_constraintTop_toBottomOf="@+id/gemsDetailComposition" />
@@ -178,6 +181,7 @@
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     android:text="Origin"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailTreatment"
                     app:layout_constraintTop_toBottomOf="@+id/gemsDetailTreatment" />
@@ -202,6 +206,7 @@
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     android:text="Colour"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailOrigin"
                     app:layout_constraintTop_toBottomOf="@+id/gemsDetailOrigin" />
@@ -226,6 +231,7 @@
                     android:layout_marginTop="16dp"
                     android:padding="8dp"
                     android:text="Carats"
+                    android:textColor="@color/dark_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/gemsDetailColor"
                     app:layout_constraintTop_toBottomOf="@+id/gemsDetailColor" />
@@ -393,7 +399,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
                     android:text="Nature and certified Yellow Sapphire ( Pukhraj ) weighing 2.26 carats in Ovel shape and yellow colour"
-                    android:textColor="@color/red"
+                    android:textColor="@color/dark_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view8" />

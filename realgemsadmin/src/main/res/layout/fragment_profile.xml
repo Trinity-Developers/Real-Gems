@@ -24,14 +24,14 @@
 
 
         <TextView
-            android:textColor="#0B0A0A"
+            android:textColor="@color/red"
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="52dp"
             android:fontFamily="@font/lato_black"
             android:text="Profile"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView10"
             app:layout_constraintStart_toEndOf="@+id/imageView10"
@@ -52,13 +52,13 @@
 
         <TextView
             android:id="@+id/pofilEditIcon"
-            android:textColor="@color/red"
+            android:textColor="#0B0A0A"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/lato_black"
             android:text="Edit Profile"
-            android:textSize="30sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/profileImg"
             app:layout_constraintStart_toStartOf="@+id/profileImg"
             app:layout_constraintTop_toBottomOf="@+id/profileImg" />
