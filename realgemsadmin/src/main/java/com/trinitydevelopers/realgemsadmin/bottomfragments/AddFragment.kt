@@ -102,11 +102,14 @@ class AddFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), index)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), index) // Use index as requestCode
     }
 
 
+
     private var imageCount = 0
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -115,11 +118,14 @@ class AddFragment : Fragment() {
             if (uri != null) {
                 // Check if this image is already selected
                 if (!selectedImages.contains(uri)) {
-                    // Add the image to the list if not already selected
-                    if (imageCount < 4) {
-                        selectedImages.add(uri)
-                        imageCount++
-                        updateImageView(selectedImages.indexOf(uri), uri)
+                    // Add the image to the correct position based on requestCode
+                    if (selectedImages.size < 4) {
+                        if (selectedImages.size > requestCode) {
+                            selectedImages[requestCode] = uri
+                        } else {
+                            selectedImages.add(requestCode, uri)
+                        }
+                        updateImageView(requestCode, uri) // Use requestCode to update the correct ImageView
                     } else {
                         Toast.makeText(context, "You have already selected 4 images", Toast.LENGTH_SHORT).show()
                     }
@@ -130,7 +136,6 @@ class AddFragment : Fragment() {
         }
     }
 
-
     private fun updateImageView(index: Int, uri: Uri) {
         when (index) {
             0 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.firoza).into(binding.imageView1)
@@ -139,6 +144,8 @@ class AddFragment : Fragment() {
             3 -> Picasso.get().load(uri).placeholder(R.drawable.firoza).error(R.drawable.firoza).into(binding.imageView4)
         }
     }
+
+
 
     private fun updateImageViews() {
         val imageViews = listOf(binding.imageView1, binding.imageView2, binding.imageView3, binding.imageView4)
